@@ -1,7 +1,9 @@
 import numpy as np
 import csv
 import math as Math
-
+# Author: Jiajun Shen (jiajun@cs.uchicago.edu)
+#
+#
 
 
 def deg2rad(deg):
@@ -63,6 +65,19 @@ class WeatherStation():
         return d
 
     def _nearestStations(self,allWeatherStations, radius = None,neighborNum = None):
+        """
+        Parameters
+        -----------------------------
+        allWeatherStations: list of Weather stations. 
+        
+        radius: double, default = None. If radius != None, the nearest stations are those stations have distance less than radius to current weather station
+        
+        neighborNum: double, default = None. If neighborNum != None, the nearest stations are nearest neighborNum weather stations.
+
+        Return
+        -----------------------------
+        a list of weather stations ordered by the distance to self, and a list of distances which is the distances to the weather stations accordingly.
+        """
         nearbyStationList = []
         distanceOfNearbyStation = []
         if radius != None:
