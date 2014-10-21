@@ -1,0 +1,7 @@
+#Convert Census shapefiles to CSV through postgresql
+#run in terminal
+
+/Library/PostgreSQL/9.3/bin/shp2pgsql -s 3435 /Users/maggiek/Desktop/sc/WeatherandCrime/data/Census_Tracts/Census_Tracts.shp censustracts postgres > censustracts.sql
+
+
+#in postgresql, execute censustracts.sql 
