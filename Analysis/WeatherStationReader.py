@@ -13,7 +13,6 @@ class WeatherStationReader():
         self._initializeWeatherStation(fileName)
         
 
-
     def _initializeWeatherStation(self,filename):
         """
         Read the Station Information from file.
