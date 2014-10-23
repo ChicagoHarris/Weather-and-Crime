@@ -108,4 +108,29 @@ class WeatherStation():
 
         return nearbyStationList,distanceOfNearbyStation
 
-    
+    def _pointDistanceTo(self,lat, lon):
+        """
+        Parameters
+        ------------------
+        stationB: WeatherStation.
+
+
+        Return:
+        ------------------
+        The distance between current weather station to the given weather station.
+        """
+        
+        lat1 = self._LAT
+        lon1 = self._LON
+        lat2 = lat
+        lon2 = lon
+        if lat1 == None or lon1 == None or lat2 == None or lon2 == None:
+            return float("inf")
+        R = 6371  #Radius of the earth in km
+        deltaLat = deg2rad(lat2-lat1);
+        deltaLon = deg2rad(lon2-lon1); 
+        a = Math.sin(deltaLat/2) * Math.sin(deltaLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(deltaLon/2) * Math.sin(deltaLon/2)
+        c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        d = R * c; # Distance in km
+        return d
+
