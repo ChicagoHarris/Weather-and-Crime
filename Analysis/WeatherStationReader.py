@@ -10,8 +10,8 @@ from WeatherStation import WeatherStation
 
 class WeatherStationReader():
     def __init__(self,fileName):
+        self._stationList = None        
         self._initializeWeatherStation(fileName)
-        
 
     def _initializeWeatherStation(self,filename):
         """
@@ -52,15 +52,16 @@ class WeatherStationReader():
         a list of weather stations ordered by the distance to self, and a list of distances which is the distances to the weather stations accordingly.
         """
         
-        allWeatherStations = self.stationList
+        allWeatherStations = self._stationList
         nearbyStationList = []
         distanceOfNearbyStation = []
         if radius != None:
             for station in allWeatherStations:
-                distance = station._pointDistanceTo(station, lat, lon)
+                distance = station._pointDistanceTo(lat, lon)
                 if(distance<=radius):
                     nearbyStationList.append(station)
                     distanceOfNearbyStation.append(distance)
+            print(len(distanceOfNearbyStation))
             distanceOfNearbyStation = np.array(distanceOfNearbyStation)
             nearbyStationList = np.array(nearbyStationList)[np.argsort(distanceOfNearbyStation)]
             distanceOfNearbyStation = np.sort(distanceOfNearbyStation)
@@ -79,8 +80,12 @@ class WeatherStationReader():
     
     def getWeightsBasedOnLocation(self, lat, lon, radius = None, neighborNum = None, powerParameter = 2):
         nearbyStationArray, distanceOfNearbyStation = self._pointNearestStations(lat, lon, radius, neighborNum)
-        weights = numpy.power(distanceOfNearbyStation, -powerParameter)
-        weights = weights / numpy.sum(weights)
+        print(distanceOfNearbyStation)
+        if(distanceOfNearbyStation[0] == 0):
+            return np.array(nearbyStationArray[0]),np.array(distanceOfNearbyStation[0]),np.array(1)
+
+        weights = np.power(distanceOfNearbyStation, -powerParameter)
+        weights = weights / np.sum(weights)
         return nearbyStationArray, distanceOfNearbyStation, weights
 
 
