@@ -11,11 +11,11 @@ def deg2rad(deg):
 
 class WeatherStation():
     def __init__(self,rawRecord):
-        self._initializeWeatherStation(rawRecord)
         self._nearbyStationList = None
         self._distanceOfNearbyStations = None
-        
-        
+        self._initializeWeatherStation(rawRecord)
+       
+ 
     def _initializeWeatherStation(self,rawRecord):
         """
         Parameters
