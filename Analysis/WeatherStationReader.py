@@ -32,6 +32,8 @@ class WeatherStationReader():
                 stationList.append(row[:])
         allWeatherStations = []
         for i in stationList[1:]:
+            if i[1] == "99999":
+                continue
             allWeatherStations.append(WeatherStation(i))
             
         self._stationList = allWeatherStations
@@ -71,10 +73,10 @@ class WeatherStationReader():
         if neighborNum != None:
             distanceList = []
             for i in range(len(allWeatherStations)):
-                distanceList.append(allWeatherStations[i]._distanceTo(lat, lon))
+                distanceList.append(allWeatherStations[i]._pointDistanceTo(lat, lon))
             distanceList = np.array(distanceList,dtype = np.double)
             nearbyStationList = np.array(allWeatherStations)[np.argsort(distanceList)[:neighborNum]]
-            distanceOfNearbyStation = distanceList[:neighborNum]
+            distanceOfNearbyStation = distanceList[np.argsort(distanceList)[:neighborNum]]
         
         return nearbyStationList,distanceOfNearbyStation
     
