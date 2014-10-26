@@ -79,13 +79,16 @@ class WeatherStationReader():
         return nearbyStationList,distanceOfNearbyStation
     
     def getWeightsBasedOnLocation(self, lat, lon, radius = None, neighborNum = None, powerParameter = 2):
+        print("====================")
         nearbyStationArray, distanceOfNearbyStation = self._pointNearestStations(lat, lon, radius, neighborNum)
-        print(distanceOfNearbyStation)
+#        print(distanceOfNearbyStation)
         if(distanceOfNearbyStation[0] == 0):
             return np.array(nearbyStationArray[0]),np.array(distanceOfNearbyStation[0]),np.array(1)
 
         weights = np.power(distanceOfNearbyStation, -powerParameter)
         weights = weights / np.sum(weights)
+        print("================")
+        print(weights)
         return nearbyStationArray, distanceOfNearbyStation, weights
 
 
