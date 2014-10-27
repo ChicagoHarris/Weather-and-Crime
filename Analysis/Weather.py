@@ -47,8 +47,11 @@ class Weather():
         self._parseWeatherType(rawRecord[11])
 
     def printOut(self):
-        print([
-        self._weatherStation,
+        print(self.outputResult())
+
+    def outputResult(self):
+        result = [
+        #self._weatherStation,
         self._dateTime,
         self._windSpeed,
         self._skyCondition,
@@ -59,7 +62,8 @@ class Weather():
         self._wetbulbFahren,
         self._dewpointFahren,
         self._stationPressure,
-        self._weatherType])
+        self._weatherType]
+        return result
 
     def _parseWeatherType(self, rawRecord):
         self._thunderStorm = (rawRecord.find("TS")>0)
