@@ -87,17 +87,33 @@ for x in reportList:
 weightedReport.printOut()
 
 
-for i in range(1):
-    originalReport = reader.getWeightsBasedOnLocation(censusUnitList[i][4],censusUnitList[i][3],neighborNum = 3)
-    a,b,c = filterWeatherStationWeights(originalReport[0],originalReport[1],originalReport[2])
-    print(b)
-    wban_code_list = [station._WBAN for station in a]
-    midTime = datetime.datetime.fromordinal((censusUnitList[i][1].toordinal() + censusUnitList[i][2].toordinal())//2)
-    reportList = reportReader.retrieveWeatherReports(wban_code_list,midTime)
-    weightedReport = weightReport(c,reportList,midTime)
-    print("=================================")
-    for report in reportList:
-        report.printOut()
-    print("---------------------------------")
-    weightedReport.printOut()
+censusListLen = len(censusUnitList)
+
+with open('censusUnitJointWeather.csv', 'wb') as csvfile:
+    writer = csv.writer(csvfile, delimiter=',')
+    writer.writerow(["censusID","startTime","endTime","lon","lat","weatherReportTime","windSpeed","skycondition", "visibility","relativeHumidity","hourlyPrecip","drybulbFahren","wetbulbFahren", "dewPointFahren", "stationPressure", "thunderstorm", "hail", "rain", "drizzle", "snow", "snowgrains", "small hail", "ice pellets", "icecrystals", "heavyfog", "fog", "mist", "haze", "smoke", "widespreaddust", "duststorm", "sand", "sandstorm","shower", "freezing", "blowing"])
+    for i in range(censusListLen):
+        originalReport = reader.getWeightsBasedOnLocation(censusUnitList[i][4],censusUnitList[i][3],neighborNum = 3)
+        a,b,c = filterWeatherStationWeights(originalReport[0],originalReport[1],originalReport[2])
+        print(b)
+        wban_code_list = [station._WBAN for station in a]
+        midTime = (censusUnitList[i][2] - censusUnitList[i][1])/2 + censusUnitList[i][1]
+        #midTime = //2)
+        print(censusUnitList[i][1],censusUnitList[i][2],midTime)
+        reportList = reportReader.retrieveWeatherReports(wban_code_list,midTime)
+        weightedReport = weightReport(c,reportList,midTime)
+        print("=================================")
+        for report in reportList:
+            report.printOut()
+        print("---------------------------------")
+        weightedReport.printOut()
+        resultRow = [censusUnitList[i][0],censusUnitList[i][1],censusUnitList[i][2],censusUnitList[i][3],censusUnitList[i][4]]
+        weatherReport = weightedReport.outputResult()
+        for i in weatherReport:
+            if isinstance(i,list):
+                for j in i:
+                    resultRow.append(j)
+            else:
+                resultRow.append(i)
+        writer.writerow(resultRow)
 
