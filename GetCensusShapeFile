@@ -1,5 +1,0 @@
-#This project uses census defined shape files to define the spatial unit of analysis in the data set. 
-
-#Census block and census tract shape files for the City of Chicago are available at the following link: 
-#http://www.cityofchicago.org/city/en/depts/doit/supp_info/gis_data.html
-
