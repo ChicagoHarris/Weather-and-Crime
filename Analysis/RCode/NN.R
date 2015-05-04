@@ -1,35 +1,47 @@
 #************************* Code can NOT be parallized: Data Preparation*******************************#
 
-
+library(grid)
+library(neuralnet)
+library(NeuralNetTools)
+library(nnet)
 
 ###################### Prepare Training Data ############################
-nrow(homicideData)
-nrow(homicideZeroData)
-colnames(homicideData)
-colnames(homicideZeroData)
-length(unique(homicideZeroData$census_tra))
+crimeDataFileDirectory = "/mnt/research_disk_1/newhome/weather_crime/data/WeatherCrimeJan2015.csv"
+crimeData = read.csv(crimeDataFileDirectory)
 
-homicideAllData = rbind(homicideData[,1:28],homicideZeroData)
+#Split training and testing data from CrimeData
+crimeData$time = as.POSIXct(crimeData$hourstart, format="%Y-%m-%d %H:%M:%S")
+
+homicideAllData = crimeData[which(crimeData$time < as.POSIXct("2014-01-01", format="%Y-%m-%d")
+                           & crimeData$time >= as.POSIXct("2009-01-01", format="%Y-%m-%d")),]
+testHomicideAllData = crimeData[which(crimeData$time >= as.POSIXct("2014-01-01", format="%Y-%m-%d")),]
+
+
+
+###Specify What Kind of Crime In Interest#####
+##Robbery, shooting, ...##
+crimeType = "robbery"
+
 
 ## Binarize Data
-homicideAllData = binarizeTrainingData(homicideAllData)
+homicideAllData = binarizeTrainingData(homicideAllData,crimeType)
 
-homicideZeroDataNN = homicideAllData[which(homicideAllData$shooting_count==0),]
-homicidePositiveDataNN = homicideAllData[which(homicideAllData$shooting_count!=0),]
+homicideZeroDataNN = homicideAllData[which(homicideAllData[,crimeType]==0),]
+homicidePositiveDataNN = homicideAllData[which(homicideAllData[,crimeType]!=0),]
 
 
 
 
 ################### Prepare Testing Data #################################
 #Binarize testing data
-testHomicideAllData = binarizeTestingData(testHomicideData,homicideAllData)
+testHomicideAllData = binarizeTestingData(homicideAllData,testHomicideAllData,crimeType)
 
 testHomicideAllData = data.frame(testHomicideAllData)
-testPositiveData = testHomicideAllData[which(testHomicideAllData$shooting_count != 0),]
-testNegativeData = testHomicideAllData[which(testHomicideAllData$shooting_count == 0),]
+testPositiveData = testHomicideAllData[which(testHomicideAllData[,crimeType] != 0),]
+testNegativeData = testHomicideAllData[which(testHomicideAllData[,crimeType] == 0),]
 
 
-##Because the test data we have doesn't have month 10, 11, 12! have to manually add it.
+##Because the test data we have doesn't have Oct, Nov and Dec! have to manually add it. This step can be skipped if we have enough data.
 testHomicideAllData$month10 = 0
 testHomicideAllData$month11 = 0
 testHomicideAllData$month12 = 0
@@ -52,13 +64,6 @@ bagging<-function(sampleSize, dataSet)
 
 
 
-
-
-
-
-
-
-
 #************************* Code CAN be parallized: Model Training*******************************#
 
 
@@ -67,11 +72,10 @@ bagging<-function(sampleSize, dataSet)
 
 
 
-#par(mfrow = c(1,1))
 
 ## Training one batch can be binarized
 
-## Bagging Data
+## Bag Select Data
 baggedZeroNN = bagging(nrow(homicidePositiveDataNN),homicideZeroDataNN)
 newTraining = rbind(baggedZeroNN, homicidePositiveDataNN)
 
@@ -87,12 +91,13 @@ newTraining$preci_index = factor(newTraining$preci_index)
 newTraining$dod_index = factor(newTraining$dod_index)
 newTraining$month = factor(newTraining$month)
 newTraining$day = factor(newTraining$day)
+
+
 ## Make the attributes binary.
 
-m <- model.matrix( 
-  ~census_tra + hournumber + shooting_count + humidity_index
-  + temp_index + wind_index + preci_index + dod_index + month
-  + day,
+names = names(newTraining)
+m <- model.matrix(
+  paste("~",paste(names[!names %in% "year"],collapse = "+"), 
   data = newTraining,
   contrasts.arg=list(census_tra=contrasts(newTraining$census_tra, contrasts=F), 
                      hournumber=contrasts(newTraining$hournumber, contrasts=F), 
@@ -123,17 +128,13 @@ for (i in c(1:ncol(n))){
 
 ##start to build model and train###
 
-library(grid)
-library(neuralnet)
 
-f <- as.formula(paste("shooting_count ~", paste(names[!names %in% "shooting_count"], collapse = " + ")))
+f <- as.formula(paste(paste(crimeType," ~"), paste(names[!names %in% "shooting_count"], collapse = " + ")))
 
 #write.csv(n, "./Desktop/finalTraining.csv")
 #n = read.csv("./Desktop/trainingData.csv")
 #write.csv(newTraining, "./Desktop/baggedNewTraining.csv")
 
-library(NeuralNetTools)
-library(nnet)
 
 # train the model
 ir.nn3 <- nnet(f, data = n, size = 10, rang = 0.1,MaxNWts = 30000,

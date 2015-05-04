@@ -1,12 +1,12 @@
-binarizeTestingData<-function(homicideAllData,testingData){
+binarizeTestingData<-function(homicideAllData,testingData,crimeType){
 
 
 newData = data.frame(testingData$census_tra, testingData$year, testingData$hournumber, testingData$time,
-                     testingData$shooting_count,testingData$wind_speed,testingData$drybulb_fahrenheit,
+                     testingData[,crimeType],testingData$wind_speed,testingData$drybulb_fahrenheit,
                      testingData$hourly_precip,testingData$relative_humidity,testingData$dod_drybulb_fahrenheit)
 
 colnames(newData) <- c("census_tra", "year","hournumber","time",
-                       "shooting_count","wind_speed","drybulb_fahrenheit",
+                       crimeType,"wind_speed","drybulb_fahrenheit",
                        "hourly_precip","relative_humidity","dod_drybulb_fahrenheit")
 
 
@@ -145,10 +145,9 @@ testHomicideAllData$dod_index = factor(testHomicideAllData$dod_index)
 testHomicideAllData$month = factor(testHomicideAllData$month)
 testHomicideAllData$day = factor(testHomicideAllData$day)
 
+names = names(testHomicideAllData)
 testHomicideAllData <- model.matrix( 
-  ~census_tra + hournumber + shooting_count + humidity_index
-  + temp_index + wind_index + preci_index + dod_index + month
-  + day,
+  paste("~",paste(names[!names %in% "year"], collapse = "+")),
   data = testHomicideAllData,
   contrasts.arg=list(census_tra=contrasts(testHomicideAllData$census_tra, contrasts=F), 
                      hournumber=contrasts(testHomicideAllData$hournumber, contrasts=F), 
