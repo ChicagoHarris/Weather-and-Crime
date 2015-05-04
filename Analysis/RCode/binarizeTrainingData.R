@@ -1,6 +1,5 @@
 #Data Clean up R#
-binarizeTrainingData<-function(homicideAllData,crimeType)
-{
+binarizeTrainingData<-function(homicideAllData,crimeType){
 
 # Select the useful data column to make a new dataframe so that we can work on
 newData = data.frame(homicideAllData$census_tra, homicideAllData$year, homicideAllData$hournumber, homicideAllData$time,
@@ -13,7 +12,7 @@ colnames(newData) <- c("census_tra", "year","hournumber","time",
 
 
 ##handle missing data
-#newData[is.na(newData)] = 0
+newData[is.na(newData)] = 0
 homicideAllData = na.omit(newData)
 
 ### binarize dataset for each column
@@ -151,8 +150,8 @@ homicideAllData$day = strftime(homicideAllData$time, "%d")
 #homicideAllData$dod_index = factor(homicideAllData$dod_index)
 #homicideAllData$month = factor(homicideAllData$month)
 #homicideAllData$day = factor(homicideAllData$day)
-return homicideAllData
 
+return homicideAllData
 }
 
 
