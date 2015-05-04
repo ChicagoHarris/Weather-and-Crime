@@ -145,9 +145,13 @@ testHomicideAllData$dod_index = factor(testHomicideAllData$dod_index)
 testHomicideAllData$month = factor(testHomicideAllData$month)
 testHomicideAllData$day = factor(testHomicideAllData$day)
 
-names = names(testHomicideAllData)
+
+allVariates = c("census_tra", "hournumber", crimeType, "humidity_index",
+"temp_index", "wind_index", "preci_index", "dod_index", "month"
+, "day")
+
 testHomicideAllData <- model.matrix( 
-  paste("~",paste(names[!names %in% "year"], collapse = "+")),
+  as.formula(paste("~",paste(allVariates, collapse = "+"))),
   data = testHomicideAllData,
   contrasts.arg=list(census_tra=contrasts(testHomicideAllData$census_tra, contrasts=F), 
                      hournumber=contrasts(testHomicideAllData$hournumber, contrasts=F), 
@@ -163,7 +167,6 @@ testHomicideAllData <- model.matrix(
 
 
 
-
 colnames(testHomicideAllData)
 names = names(testHomicideAllData)
 names = names[2:length(names)]
@@ -172,5 +175,5 @@ for (i in c(1:ncol(testHomicideAllData))){
   testHomicideAllData[,i] = as.integer(testHomicideAllData[,i])
 }
 
-return testHomicideAllData
+return(testHomicideAllData)
 }
