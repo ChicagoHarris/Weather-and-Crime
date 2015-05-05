@@ -151,7 +151,7 @@ homicideAllData$day = strftime(homicideAllData$time, "%d")
 #homicideAllData$month = factor(homicideAllData$month)
 #homicideAllData$day = factor(homicideAllData$day)
 
-return homicideAllData
+return(homicideAllData)
 }
 
 

@@ -12,20 +12,20 @@ crimeData = read.csv(crimeDataFileDirectory)
 #Split training and testing data from CrimeData
 crimeData$time = as.POSIXct(crimeData$hourstart, format="%Y-%m-%d %H:%M:%S")
 
-homicideAllData = crimeData[which(crimeData$time < as.POSIXct("2014-01-01", format="%Y-%m-%d")
-                           & crimeData$time >= as.POSIXct("2009-01-01", format="%Y-%m-%d")),]
+homicideAllData = crimeData[which(crimeData$time < as.POSIXct("2014-01-01", format="%Y-%m-%d") & crimeData$time >= as.POSIXct("2009-01-01", format="%Y-%m-%d")),]
 testHomicideAllData = crimeData[which(crimeData$time >= as.POSIXct("2014-01-01", format="%Y-%m-%d")),]
 
 
 
 ###Specify What Kind of Crime In Interest#####
 ##Robbery, shooting, ...##
-crimeType = "robbery"
+crimeType = "robbery_count"
 
 
 ## Binarize Data
 homicideAllData = binarizeTrainingData(homicideAllData,crimeType)
 
+## Separate Positive Cases and Negative Cases
 homicideZeroDataNN = homicideAllData[which(homicideAllData[,crimeType]==0),]
 homicidePositiveDataNN = homicideAllData[which(homicideAllData[,crimeType]!=0),]
 
@@ -94,10 +94,12 @@ newTraining$day = factor(newTraining$day)
 
 
 ## Make the attributes binary.
-
+allVariates = c("census_tra" , "hournumber" , crimeType, "humidity_index",
+  "temp_index", "wind_index", "preci_index", "dod_index", "month"
+  ,"day")
 names = names(newTraining)
 m <- model.matrix(
-  paste("~",paste(names[!names %in% "year"],collapse = "+"), 
+  as.formula(paste("~",paste(allVariates,collapse = "+"))), 
   data = newTraining,
   contrasts.arg=list(census_tra=contrasts(newTraining$census_tra, contrasts=F), 
                      hournumber=contrasts(newTraining$hournumber, contrasts=F), 
@@ -147,7 +149,6 @@ ir.nn3 <- nnet(f, data = n, size = 10, rang = 0.1,MaxNWts = 30000,
 #Start to predict
 
 predictedPositiveTest=predict(ir.nn3, testPositiveData, type = "raw")
-save.image(file="workspace21.RData")
 predictedNegativeTest=predict(ir.nn3, testNegativeData, type = "raw")
 
 #==============================
