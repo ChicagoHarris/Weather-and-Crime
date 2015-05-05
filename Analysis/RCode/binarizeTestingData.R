@@ -167,9 +167,7 @@ testHomicideAllData <- model.matrix(
 
 
 
-colnames(testHomicideAllData)
-names = names(testHomicideAllData)
-names = names[2:length(names)]
+#colnames(testHomicideAllData)
 
 for (i in c(1:ncol(testHomicideAllData))){
   testHomicideAllData[,i] = as.integer(testHomicideAllData[,i])
