@@ -45,7 +45,7 @@
     print("Done.")
 
     #Prepare model formula
-    colnames = names(trainingData)
+    names = names(trainingData)
     f <- as.formula(paste(paste(crimeType," ~"), paste(names[!names %in% crimeType], collapse = " + ")))
 
     #Train NN model

@@ -34,9 +34,15 @@
     print(args[6])
     testingDataDir = args[6]
 
+
+    # set maximum number of test points. Otherwise we will have memory problem
+    MAXROW = 1000000
+
+
     # load the raw data
     print("loading csv ...(This gonna take a long time)")
     crimeData = read.csv(rawDataDir)
+    crimeData = data.frame(crimeData)
 
     # create time as Type time
     crimeData$time = as.POSIXct(crimeData$hourstart, format="%Y-%m-%d %H:%M:%S")
@@ -71,7 +77,17 @@
     # In the future, training data and testing data will be loaded from separate places.
     historicalData = crimeData[which(crimeData$year < 2014
                                & crimeData$year >= 2009),]
-    forecastData = crimeData[which(crimeData$time >= 2014),]
+    forecastData = crimeData[which(crimeData$year >= 2014),]
+
+    
+    #Test if test data has more than MAXROW records. This should never happen in reality since we wont
+    #predict so many points.
+
+    if(nrow(forecastData) > MAXROW){
+        print(paste("WARNING: Forecast data has more records than", MAXROW))
+        print(paste("Using first", MAXROW, "rows instead"))
+        forecastData = forecastData[1:MAXROW,]
+    }
 
 
     print("Binning, binaralizing and bagging data.....")
@@ -91,7 +107,7 @@
 
     ##Save testing data to testingDataDir
 
-    saveRDS(data.frame(processedData$forecastData, file = paste(testingDataDir, "/.testingData.rds", sep = "")))
+    saveRDS(data.frame(processedData$forecastData), file = paste(testingDataDir, "/.testingData.rds", sep = ""))
     
 
     #Save forecast data for furthur evaluation
