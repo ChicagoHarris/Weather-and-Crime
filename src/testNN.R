@@ -61,7 +61,7 @@
         forecastData$prediction = forecastData$prediction + predictedResult
     }
     
-    #Average different predictions
+    #Average all different predictions
     forecastData$prediction = forecastData$prediction/ numOfBaggedSamples
     forecastData$prediction[forecastData$prediction>=0.5] = 1
     forecastData$prediction[forecastData$prediction<0.5] = 0
