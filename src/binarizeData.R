@@ -135,5 +135,5 @@ binarizeData<-function(crimeData, forecastData, covariates,binningCovariates, mo
 
     print("Done")
     result = list("bagOfTraining" = bagOfTraining, "forecastData" = forecastData)
-
+    result
 }

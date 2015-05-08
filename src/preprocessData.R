@@ -29,7 +29,7 @@
     testingDataDir = args[6]
 
     # load the raw data
-    print("loading csv ...")
+    print("loading csv ...(This gonna take a long time)")
     crimeData = read.csv(rawDataDir)
 
     # create time as Type time
