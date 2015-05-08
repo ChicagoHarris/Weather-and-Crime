@@ -26,15 +26,15 @@
 
     print("======Index of Bagged Samples=====")
     print(args[4])
-    indexOfBaggedSamples = args[4]
+    indexOfBaggedSamples = as.integer(args[4])
 
     print("===number of hidden nodes=======")
     print(args[5])
-    nHidden = args[5]
+    nHidden = as.integer(args[5])
 
     print("======number of iterations=====")
     print(args[6])
-    nIter = args[6]
+    nIter = as.integer(args[6])
 
     
     #load training data
