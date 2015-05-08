@@ -2,25 +2,25 @@
     #process arguments passed into the script
     args <- commandArgs(trailingOnly = TRUE)
     print("====Processing Input Parameters====")
-    if(length(args)!=4){
+    if(length(args)!=6){
         print("[Error] Invalid Input Parameters")
         quit()
     }
-    print("========crime type=============")
+    print("=========crime type==================")
     print(args[1])
     crimeType = args[1]
 
     print("====Number of bins for continous variable==")
     numOfBins = args[2]
 
-    print("====Number of bagged samples=========")
+    print("======Number of bagged samples=========")
     numOfBaggedSamples = args[3]
 
     print("========directory to raw data=========")
     print(args[4])
     rawDataDir = args[4]
 
-    print("=====directory to output training data=====")
+    print("====directory to output training data====")
     print(args[5])
     trainingDataDir = args[5]
 
@@ -37,7 +37,10 @@
     crimeData$month = strftime(crimeData$time, "%m")
     crimeData$day = strftime(crimeData$time, "%d")
 
-    print("finish loading ...")
+    print("finish loading")
+
+
+    print("Preparing.....")
 
     # specify all the covariates we will use to model
     dataCovariates = c("census_tra", "month","day","hournumber", crimeType, "wind_speed", "drybulb_fahrenheit", "hourly_precip", "relative_humidity", "dod_drybulb_fahrenheit")
@@ -55,6 +58,7 @@
     # create the covariates after binning and binarizing
     modelCovariates = createCovariates(crimeData, dataCovariates, binningCovariates, numOfBins, crimeType)
 
+
     #For now, we manually separate raw data into training data and testing data
     # training data: 2009-2013
     # testing data: 2014
@@ -63,12 +67,12 @@
                                & crimeData$time >= as.POSIXct("2009-01-01", format="%Y-%m-%d")),]
     forecastData = crimeData[which(crimeData$time >= as.POSIXct("2014-01-01", format="%Y-%m-%d")),]
 
+
+    print("Binning, binaralizing and bagging data.....")
     
     #binarize training and testing data
     #Notice that binarization takes lots of memory, we bag training data as well
     processedData = binarizeData(historicalData, forecastData, dataCovariates, binningCovariates, modelCovariates, numOfBins, crimeType, numOfBaggedSamples)
-
-
     
     print("Save preprocessed data into directory.....")
 
