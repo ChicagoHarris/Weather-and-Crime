@@ -63,14 +63,13 @@
     
     #Average different predictions
     forecastData$prediction = forecastData$prediction/ numOfBaggedSamples
-
+    forecastData$prediction[forecastData$prediction>=0.5,] = 1
+    forecastData$prediction[forecastData$prediction<0.5,] = 0
+    
     print("Done.")
 
     print("Saving prediction file...")
 
     #Save prediction to csv file
     write.csv(forecastData, file = paste(predictionDir,"/prediction.csv",sep = ""),row.names = FALSE)
-    print("Done.")
-    
-    print("Average Accuracy:")
-    print(mean(forecastData$prediction - forecastData[,crimeType]))
+    print("Done.") 
