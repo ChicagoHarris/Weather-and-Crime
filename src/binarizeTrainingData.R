@@ -1,15 +1,13 @@
 #Data Clean up R#
-binarizeTrainingData<-function(homicideAllData)
-{
-#homicideAllData = rbind(homicideData[,1:28],homicideZeroData)
+binarizeTrainingData<-function(homicideAllData,crimeType){
 
 # Select the useful data column to make a new dataframe so that we can work on
 newData = data.frame(homicideAllData$census_tra, homicideAllData$year, homicideAllData$hournumber, homicideAllData$time,
-                     homicideAllData$shooting_count,homicideAllData$wind_speed,homicideAllData$drybulb_fahrenheit,
+                     homicideAllData[,crimeType],homicideAllData$wind_speed,homicideAllData$drybulb_fahrenheit,
                      homicideAllData$hourly_precip,homicideAllData$relative_humidity,homicideAllData$dod_drybulb_fahrenheit)
 # change column name
 colnames(newData) <- c("census_tra", "year","hournumber","time",
-                       "shooting_count","wind_speed","drybulb_fahrenheit",
+                       crimeType,"wind_speed","drybulb_fahrenheit",
                        "hourly_precip","relative_humidity","dod_drybulb_fahrenheit")
 
 
@@ -152,8 +150,8 @@ homicideAllData$day = strftime(homicideAllData$time, "%d")
 #homicideAllData$dod_index = factor(homicideAllData$dod_index)
 #homicideAllData$month = factor(homicideAllData$month)
 #homicideAllData$day = factor(homicideAllData$day)
-return homicideAllData
 
+return(homicideAllData)
 }
 
 

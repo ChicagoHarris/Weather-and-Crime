@@ -1,4 +1,4 @@
-#************************* Code can NOT be parallized: Data Preparation*******************************#
+#*********************** Code can NOT be parallized: Data Preparation*****#
 
 library(grid)
 library(neuralnet)
@@ -11,13 +11,12 @@ crimeData = read.csv(crimeDataFileDirectory)
 
 #Split training and testing data from CrimeData
 crimeData$time = as.POSIXct(crimeData$hourstart, format="%Y-%m-%d %H:%M:%S")
-
 homicideAllData = crimeData[which(crimeData$time < as.POSIXct("2014-01-01", format="%Y-%m-%d") & crimeData$time >= as.POSIXct("2009-01-01", format="%Y-%m-%d")),]
 testHomicideAllData = crimeData[which(crimeData$time >= as.POSIXct("2014-01-01", format="%Y-%m-%d")),]
 
 
 
-###Specify What Kind of Crime In Interest#####
+###################Specify What Kind of Crime In Interest################
 ##Robbery, shooting, ...##
 crimeType = "robbery_count"
 
