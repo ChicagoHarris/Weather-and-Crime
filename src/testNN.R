@@ -1,0 +1,64 @@
+    library(grid)
+    library(neuralnet)
+    library(nnet)
+
+    #process arguments passed into the script
+    args <- commandArgs(trailingOnly = TRUE)
+
+    print("===processing input parameters====")
+
+    if(length(args) != 5){
+        print("[Error] Invalid Input Parameters")
+        quit()
+    }
+
+    print("=========crime type=============")
+    print(args[1])
+    crimeType = args[1]
+
+    print("===directory to input testing data===")
+    print(args[2])
+    testingDataDir = args[2]
+
+    print("===directory to input model=======")
+    print(args[3])
+    modelDir = args[3]
+
+    print("===directory to output prediction=======")
+    print(args[4])
+    predictionDir = args[4]
+    
+
+    print("======number of Bagged Samples=====")
+    print(args[5])
+    numOfBaggedSamples = args[5]
+    
+
+    #load testing data
+    print("loading testing data")
+
+    testingData = readRDS(file = paste(testingDataDir,"/.testingData.rds",sep = ""))
+
+    print("Done.")
+    
+    #load original forecast data
+    print("loading original forecast data")
+    forecastData = readRDS(file = paste(testingDataDir,"/.originalForecastData.rds",sep = ""))
+
+    forecastData$prediction = 0
+
+    #Making prediciton using different Neural net
+
+    for (i in c(1:numOfBaggedSamples)){
+        trainedNN = readRDS(file = paste(modelDir, "/._NNmodel_", i, ".rds", sep = ""))
+        predictedResult = predict(trainedNN, testingData,type = "raw")
+        forecastData$prediction = forecastData$prediction + predictedResult
+    }
+
+    #Average different predictions
+    forecastData$prediction = forecastData$prediction/ numOfBaggedSamples
+
+    #Save prediction to csv file
+    write.csv(forecastData, file = paste(predictionDir,"/prediction.csv",row.names = FALSE))
+
+

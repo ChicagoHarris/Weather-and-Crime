@@ -79,12 +79,20 @@
 
     ##Save bags of training data to trainingDataDir
     for (i in c(1:numOfBaggedSamples)){
-        save(data.frame(processedData$bagOfTraining[i]), file = paste(trainingDataDir,"/.bagTrainingData_",i,".RData",sep = ""))
+        saveRDS(data.frame(processedData$bagOfTraining[i]), file = paste(trainingDataDir,"/.bagTrainingData_",i,".rds",sep = ""))
 
     }
 
     ##Save testing data to testingDataDir
 
-    save(data.frame(processedData$forecastData, file = paste(testingDataDir, "/.testingData.RData", sep = "")))
+    saveRDS(data.frame(processedData$forecastData, file = paste(testingDataDir, "/.testingData.rds", sep = "")))
+    
+
+    #Save forecast data for furthur evaluation
+    saveRDS(data.frame(forecastData), file = paste(testingDataDir, "/.originalForecastData.rds", sep = ""))
+
 
     print("Data preprocessing done!")
+
+
+
