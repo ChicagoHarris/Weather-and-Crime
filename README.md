@@ -12,9 +12,22 @@ Use the Get* scripts to pull the data, and then the Import scripts to centralize
 
 ##How to Run
 
+### Requirements
+
+ * [Python](http://python.org/) (2.6>=, 3.3>=)
+ * [R](http://www.r-project.org/)(3.1>=)
+ * [package "parallel"](https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf)
+ * [package "grid"](https://stat.ethz.ch/R-manual/R-devel/library/grid/html/00Index.html)
+ * [package "neuralnet"](http://cran.r-project.org/web/packages/neuralnet/neuralnet.pdf)
+ * [package "nnet"](http://cran.r-project.org/web/packages/nnet/nnet.pdf)
+ * [GNU Parallel](http://www.gnu.org/software/parallel/)
+ * [Numpy](https://github.com/numpy/numpy)
+ * [Scipy](https://github.com/scipy/scipy)
+ 
 ### Before you start
 
 * Set the DATAPATH in the bash file `$WeatherAndCrimeROOT/script/execute.sh`. Make sure you already create directory for data and models.
+
 
 ### Run the Code
 
