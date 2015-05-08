@@ -14,11 +14,14 @@ Use the Get* scripts to pull the data, and then the Import scripts to centralize
 
 ### Before you start
 
-* Set the PATH in the bash file `./script/execute.sh`. Make sure you already create directory for data and models.
+* Set the DATAPATH in the bash file `./script/execute.sh`. Make sure you already create directory for data and models.
 
 ### Run the Code
 
-* Run the command `./script/execute.sh`. It will go through three stages:  
+* Run the command  
+    `cd src/` 
+    `bash ../script/execute.sh`.  
+It will go through three stages:  
     1) Preprocess the historical data and the forecast data;  
     2) Training the model with bagging in parallel;  
     3) Testing the model, and produce the prediction csv file;  
