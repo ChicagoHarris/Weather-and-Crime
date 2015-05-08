@@ -26,7 +26,7 @@ Use the Get* scripts to pull the data, and then the Import scripts to centralize
  
 ### Before you start
 
-* Set the DATAPATH in the bash file `$WeatherAndCrimeROOT/script/execute.sh`. Make sure you already create directory for data and models.
+* Set the DATAPATH in the bash file `$WeatherAndCrimeROOT/script/execute.sh`. Make sure you already created the directory for data and models.
 
 
 ### Run the Code
