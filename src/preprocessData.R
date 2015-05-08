@@ -49,7 +49,7 @@
     binningCovariates = c("wind_speed","drybulb_fahrenheit","hourly_precip","relative_humidity","dod_drybulb_fahrenheit")
 
 
-    crimeData = crimeData[,c(covariates,"time")]
+    crimeData = crimeData[,c(dataCovariates,"time")]
 
     ##handle missing data
     crimeData[is.na(crimeData)] = 0
