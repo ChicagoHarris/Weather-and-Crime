@@ -1,4 +1,3 @@
-    library(grid)
     library(neuralnet)
     library(nnet)
 
