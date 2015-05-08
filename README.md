@@ -18,9 +18,7 @@ Use the Get* scripts to pull the data, and then the Import scripts to centralize
 
 ### Run the Code
 
-* Run the command `./script/execute.sh`. 
-
-** It will go through three stages: 
-    1) Preprocess the data
-    2) Training the model
-    3) Testing the model, produce the prediction csv file
+* Run the command `./script/execute.sh`. It will go through three stages: 
+    1) Preprocess the data;
+    2) Training the model;
+    3) Testing the model, and produce the prediction csv file;
