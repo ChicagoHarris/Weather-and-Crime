@@ -8,7 +8,9 @@ This project is funded by a grant from the Arnold Foundation and is housed at th
 
 Use the Get* scripts to pull the data, and then the Import scripts to centralize and format for analysis in R.
 
-### How to Run
+
+
+##How to Run
 ==============
 
 ### Before you start
