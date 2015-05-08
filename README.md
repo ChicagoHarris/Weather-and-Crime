@@ -38,5 +38,5 @@ bash ../script/execute.sh
 ```
 It will go through three stages:  
     1) Preprocess the historical data and the forecast data;  
-    2) Training the model with bagging in parallel;  
-    3) Testing the model, and produce the prediction csv file;  
+    2) Train the model with bagging in parallel;  
+    3) Test the model, and produce the prediction csv file;  
