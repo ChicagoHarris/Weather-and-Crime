@@ -31,7 +31,7 @@
 
     print("======number of Bagged Samples=====")
     print(args[5])
-    numOfBaggedSamples = args[5]
+    numOfBaggedSamples = as.integer(args[5])
     
 
     #load testing data

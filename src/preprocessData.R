@@ -11,10 +11,10 @@
     crimeType = args[1]
 
     print("====Number of bins for continous variable==")
-    numOfBins = args[2]
+    numOfBins = as.integer(args[2])
 
     print("======Number of bagged samples=========")
-    numOfBaggedSamples = args[3]
+    numOfBaggedSamples = as.integer(args[3])
 
     print("========directory to raw data=========")
     print(args[4])
