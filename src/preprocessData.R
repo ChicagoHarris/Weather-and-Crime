@@ -1,4 +1,8 @@
 
+    source("bagging.R")
+    source("binarizeData.R")
+    source("createCovariates.R")
+
     #process arguments passed into the script
     args <- commandArgs(trailingOnly = TRUE)
     print("====Processing Input Parameters====")
@@ -11,9 +15,11 @@
     crimeType = args[1]
 
     print("====Number of bins for continous variable==")
+    print(args[2])
     numOfBins = as.integer(args[2])
 
     print("======Number of bagged samples=========")
+    print(args[3])
     numOfBaggedSamples = as.integer(args[3])
 
     print("========directory to raw data=========")
@@ -49,7 +55,7 @@
     binningCovariates = c("wind_speed","drybulb_fahrenheit","hourly_precip","relative_humidity","dod_drybulb_fahrenheit")
 
 
-    crimeData = crimeData[,c(dataCovariates,"time")]
+    crimeData = crimeData[,c(dataCovariates,"year")]
 
     ##handle missing data
     crimeData[is.na(crimeData)] = 0
@@ -63,9 +69,9 @@
     # training data: 2009-2013
     # testing data: 2014
     # In the future, training data and testing data will be loaded from separate places.
-    historicalData = crimeData[which(crimeData$time < as.POSIXct("2014-01-01", format="%Y-%m-%d")
-                               & crimeData$time >= as.POSIXct("2009-01-01", format="%Y-%m-%d")),]
-    forecastData = crimeData[which(crimeData$time >= as.POSIXct("2014-01-01", format="%Y-%m-%d")),]
+    historicalData = crimeData[which(crimeData$year < 2014
+                               & crimeData$year >= 2009),]
+    forecastData = crimeData[which(crimeData$time >= 2014),]
 
 
     print("Binning, binaralizing and bagging data.....")
