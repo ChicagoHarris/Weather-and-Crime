@@ -17,7 +17,6 @@ Use the Get* scripts to pull the data, and then the Import scripts to centralize
  * [Python](http://python.org/) (2.6>=, 3.3>=)
  * [R](http://www.r-project.org/) (3.1>=)
  * [package "parallel"](https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf)
- * [package "grid"](https://stat.ethz.ch/R-manual/R-devel/library/grid/html/00Index.html)
  * [package "neuralnet"](http://cran.r-project.org/web/packages/neuralnet/neuralnet.pdf)
  * [package "nnet"](http://cran.r-project.org/web/packages/nnet/nnet.pdf)
  * [GNU Parallel](http://www.gnu.org/software/parallel/)
