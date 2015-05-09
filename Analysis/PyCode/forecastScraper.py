@@ -4,8 +4,11 @@
 import pandas as pd
 import requests
 import bs4
+from datetime import datetime
+import time
 
 
+#Pull the different datetime intervals
 def pullDatetimes(xmlsoup):
 	datetime = xmlsoup.data.findAll('time-layout')
 	intervalOneHour = xmlsoup.data.parameters.temperature['time-layout']
@@ -31,6 +34,7 @@ def pullDatetimes(xmlsoup):
 	return datetime
 
 
+#Pull the forecast values
 def pullValues(xmlsoup):
 	tempxml = xmlsoup.data.parameters.temperature.findAll('value')
 	humidityxml = xmlsoup.data.parameters.humidity.findAll('value')
@@ -60,28 +64,32 @@ def pullValues(xmlsoup):
 	return predictions
 
 
-def joinDataFrames(predictions,datetime):
-	#temp,humidity,wind,rain,snow,ice,hail,thunderstorm = predictions.values()
-	#datetime1,datetime2,datetime3,datetime4 = datetime.values()
-
-	forecasts = pd.DataFrame(datetime['datetime1'],columns=['Datetime'])
-	forecasts2 = pd.DataFrame(datetime['datetime2'],columns=['Datetime'])
-	forecasts3 = pd.DataFrame(datetime['datetime3'],columns=['Datetime'])
-	forecasts4 = pd.DataFrame(datetime['datetime4'],columns=['Datetime'])
-	forecasts['Temperature'] = predictions['temp']
-	forecasts['Humidity'] = predictions['humidity']
-	forecasts['WindSpeed'] = predictions['wind']
+#Join the different data frames into one
+def joinDataFrames(predictions,dt):
+	forecasts = pd.DataFrame(dt['datetime1'],columns=['dates'])
+	forecasts2 = pd.DataFrame(dt['datetime2'],columns=['dates'])
+	forecasts3 = pd.DataFrame(dt['datetime3'],columns=['dates'])
+	forecasts4 = pd.DataFrame(dt['datetime4'],columns=['dates'])
+	forecasts['drybulb_fahrenheit'] = predictions['temp']
+	forecasts['relative_humidity'] = predictions['humidity']
+	forecasts['wind_speed'] = predictions['wind']
 	forecasts['CloudCover'] = predictions['cloudy']
-	forecasts2['Rain'] = predictions['rain']
+	forecasts2['hourly_precip'] = predictions['rain']
 	forecasts2['Snow'] = predictions['snow']
 	forecasts2['Ice'] = predictions['ice']
 	forecasts3['Hail'] = predictions['hail']
 	forecasts4['Probability of Thunderstorm'] = predictions['thunderstorm']
-	forecasts = forecasts.set_index('Datetime')
-	forecasts2 = forecasts2.set_index('Datetime')
-	forecasts3 = forecasts3.set_index('Datetime')
-	forecasts4 = forecasts4.set_index('Datetime')
+	forecasts = forecasts.set_index('dates')
+	forecasts2 = forecasts2.set_index('dates')
+	forecasts3 = forecasts3.set_index('dates')
+	forecasts4 = forecasts4.set_index('dates')
 	forecasts = forecasts.join(forecasts2).join(forecasts3).join(forecasts4)
+	forecasts['year'] = [datetime.strptime(dt, "%Y-%m-%dT%H:00:00-05:00").year for dt in forecasts.index.values]
+	forecasts['month'] = [datetime.strptime(dt, "%Y-%m-%dT%H:00:00-05:00").month for dt in forecasts.index.values]
+	forecasts['day'] = [datetime.strptime(dt, "%Y-%m-%dT%H:00:00-05:00").day for dt in forecasts.index.values]
+	forecasts['hour'] = [datetime.strptime(dt, "%Y-%m-%dT%H:00:00-05:00").hour for dt in forecasts.index.values]
+	forecasts['dt'] = forecasts[['year','month','day']].apply(lambda row: '-'.join(map(str, row)), axis=1)
+	forecasts['dt'] = forecasts['dt'] +' '+ forecasts['hour'].map(str) +':00'
 	return forecasts
 
 
@@ -91,8 +99,12 @@ if __name__ == "__main__":
 	xmlstring = request.text.encode('utf-8')
 	xmlsoup = bs4.BeautifulSoup(xmlstring, 'xml', from_encoding="utf-8")
 
-	datetime = pullDatetimes(xmlsoup)
+	dt = pullDatetimes(xmlsoup)
 	predictions = pullValues(xmlsoup)
-	df_output = joinDataFrames(predictions,datetime)
-
+	df_output = joinDataFrames(predictions,dt).interpolate()
+	df_output['forecastedDT'] = time.strftime("%x")
+	df_output['uniqueID'] = df_output['dt'] + df_output['forecastedDT']#[dat + forecastedDT for dat in df_output.index.values]
+	df_output['location'] = xmlsoup.data.point['latitude'] + ',' + xmlsoup.data.point['longitude']
+	df_output = df_output.reset_index(drop=True)
+	df_output = df_output.set_index('uniqueID')
 	df_output.to_csv('forecasts.csv')
