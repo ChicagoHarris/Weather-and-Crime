@@ -55,10 +55,17 @@
     print("Preparing.....")
 
     # specify all the covariates we will use to model
-    dataCovariates = c("census_tra", "month","day","hournumber", crimeType, "wind_speed", "drybulb_fahrenheit", "hourly_precip", "relative_humidity", "dod_drybulb_fahrenheit")
+    dataCovariates = c("census_tra", "month","day","hournumber", crimeType, "wind_speed", 
+    "drybulb_fahrenheit", "hourly_precip", "relative_humidity", 
+    "dod1_drybulb_fahrenheit","dod2_drybulb_fahrenheit","dod3_drybulb_fahrenheit",
+    "wow1_drybulb_fahrenheit","wow2_drybulb_fahrenheit","precip_hour_cnt_in_last_1_day",
+    "precip_hour_cnt_in_last_3_day","precip_hour_cnt_in_last_1_week","hour_count_since_precip")
 
     # specify the variables that we will binning
-    binningCovariates = c("wind_speed","drybulb_fahrenheit","hourly_precip","relative_humidity","dod_drybulb_fahrenheit")
+    binningCovariates = c("wind_speed","drybulb_fahrenheit","hourly_precip","relative_humidity",
+    "dod1_drybulb_fahrenheit","dod2_drybulb_fahrenheit","dod3_drybulb_fahrenheit",
+    "wow1_drybulb_fahrenheit","wow2_drybulb_fahrenheit","precip_hour_cnt_in_last_1_day",
+    "precip_hour_cnt_in_last_3_day","precip_hour_cnt_in_last_1_week","hour_count_since_precip")
 
 
     crimeData = crimeData[,c(dataCovariates,"year")]
