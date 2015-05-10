@@ -34,9 +34,15 @@
     print(args[6])
     testingDataDir = args[6]
 
+
+    # set maximum number of test points. Otherwise we will have memory problem
+    MAXROW = 1000000
+
+
     # load the raw data
     print("loading csv ...(This gonna take a long time)")
     crimeData = read.csv(rawDataDir)
+    crimeData = data.frame(crimeData)
 
     # create time as Type time
     crimeData$time = as.POSIXct(crimeData$hourstart, format="%Y-%m-%d %H:%M:%S")
@@ -49,10 +55,17 @@
     print("Preparing.....")
 
     # specify all the covariates we will use to model
-    dataCovariates = c("census_tra", "month","day","hournumber", crimeType, "wind_speed", "drybulb_fahrenheit", "hourly_precip", "relative_humidity", "dod_drybulb_fahrenheit")
+    dataCovariates = c("census_tra", "month","day","hournumber", crimeType, "wind_speed", 
+    "drybulb_fahrenheit", "hourly_precip", "relative_humidity", 
+    "dod1_drybulb_fahrenheit","dod2_drybulb_fahrenheit","dod3_drybulb_fahrenheit",
+    "wow1_drybulb_fahrenheit","wow2_drybulb_fahrenheit","precip_hour_cnt_in_last_1_day",
+    "precip_hour_cnt_in_last_3_day","precip_hour_cnt_in_last_1_week","hour_count_since_precip")
 
     # specify the variables that we will binning
-    binningCovariates = c("wind_speed","drybulb_fahrenheit","hourly_precip","relative_humidity","dod_drybulb_fahrenheit")
+    binningCovariates = c("wind_speed","drybulb_fahrenheit","hourly_precip","relative_humidity",
+    "dod1_drybulb_fahrenheit","dod2_drybulb_fahrenheit","dod3_drybulb_fahrenheit",
+    "wow1_drybulb_fahrenheit","wow2_drybulb_fahrenheit","precip_hour_cnt_in_last_1_day",
+    "precip_hour_cnt_in_last_3_day","precip_hour_cnt_in_last_1_week","hour_count_since_precip")
 
 
     crimeData = crimeData[,c(dataCovariates,"year")]
@@ -71,7 +84,17 @@
     # In the future, training data and testing data will be loaded from separate places.
     historicalData = crimeData[which(crimeData$year < 2014
                                & crimeData$year >= 2009),]
-    forecastData = crimeData[which(crimeData$time >= 2014),]
+    forecastData = crimeData[which(crimeData$year >= 2014),]
+
+    
+    #Test if test data has more than MAXROW records. This should never happen in reality since we wont
+    #predict so many points.
+
+    if(nrow(forecastData) > MAXROW){
+        print(paste("WARNING: Forecast data has more records than", MAXROW))
+        print(paste("Using first", MAXROW, "rows instead"))
+        forecastData = forecastData[1:MAXROW,]
+    }
 
 
     print("Binning, binaralizing and bagging data.....")
@@ -91,7 +114,7 @@
 
     ##Save testing data to testingDataDir
 
-    saveRDS(data.frame(processedData$forecastData, file = paste(testingDataDir, "/.testingData.rds", sep = "")))
+    saveRDS(data.frame(processedData$forecastData), file = paste(testingDataDir, "/.testingData.rds", sep = ""))
     
 
     #Save forecast data for furthur evaluation

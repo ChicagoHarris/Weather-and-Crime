@@ -1,11 +1,17 @@
-binarizeData<-function(crimeData, forecastData, covariates,binningCovariates, modelCovariates, numOfBins, crimeType, numOfBaggedSamples){
-    library(parallel)
+#Bin the continous variables in the data and binarize the data.
 
+binarizeData<-function(crimeData, forecastData, covariates,binningCovariates, modelCovariates, numOfBins, crimeType, numOfBaggedSamples){
+    source("bagging.R")
+    library(parallel)
+    
+    #Select data that we are interested
     crimeData = crimeData[,covariates]
     forecastData = forecastData[,covariates]
-
+    
+    #Get the names of covariates
     processedCovariates = modelCovariates$processedCovariates
     allCovariates = modelCovariates$allCovariates
+
 
     #Record the upper bound and lower bound for a certain variable in historical data
     #We need that to truncate the testing data.
@@ -14,9 +20,9 @@ binarizeData<-function(crimeData, forecastData, covariates,binningCovariates, mo
     lowerQuanVector = c()
     
     print("Binning historical data....")
-    #Binning the historical data
-    #Record the upper bound and lower bound
 
+    #Truncate and binning the historical data
+    #Record the upper bound and lower bound
     for (variates in binningCovariates){
 
         truncate = crimeData[,variates]
@@ -95,12 +101,15 @@ binarizeData<-function(crimeData, forecastData, covariates,binningCovariates, mo
 
     print("Done.")
 
+    # Before binarizing, we first bag the data in order to save memory
     bagAndBinaralizeTraining<-function(i){
-
+        
+        # Subsample from the negative data and bag them together.
         baggedNegativeCrimeData = bagging(nrow(positveCrimeData),negativeCrimeData)
-
         crimeData = rbind(baggedNegativeCrimeData,positveCrimeData)    
 
+
+        # Binarize the data
         contrastVector = c()
         for (variates in processedCovariates){
             if(variates != crimeType){
@@ -130,6 +139,7 @@ binarizeData<-function(crimeData, forecastData, covariates,binningCovariates, mo
         crimeData
     }
 
+    #Parallelize Binaralizing data
     print("Parallelize Binaralizing Bagged Training Data....")
     bagOfTraining = mclapply(c(1:numOfBaggedSamples), bagAndBinaralizeTraining) 
 

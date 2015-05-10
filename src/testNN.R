@@ -1,4 +1,3 @@
-    library(grid)
     library(neuralnet)
     library(nnet)
 
@@ -44,21 +43,33 @@
     #load original forecast data
     print("loading original forecast data")
     forecastData = readRDS(file = paste(testingDataDir,"/.originalForecastData.rds",sep = ""))
+    print("Done.")
 
+
+    #Create a new column to hold all the predictions
     forecastData$prediction = 0
 
     #Making prediciton using different Neural net
+
+
+    print("Start predicting....")
 
     for (i in c(1:numOfBaggedSamples)){
         trainedNN = readRDS(file = paste(modelDir, "/._NNmodel_", i, ".rds", sep = ""))
         predictedResult = predict(trainedNN, testingData,type = "raw")
         forecastData$prediction = forecastData$prediction + predictedResult
     }
-
-    #Average different predictions
+    
+    #Average all different predictions
     forecastData$prediction = forecastData$prediction/ numOfBaggedSamples
+    forecastData$predictionBinary = forecastData$prediction
+    forecastData$predictionBinary[forecastData$prediction>=0.5] = 1
+    forecastData$predictionBinary[forecastData$prediction<0.5] = 0
+    
+    print("Done.")
+
+    print("Saving prediction file...")
 
     #Save prediction to csv file
-    write.csv(forecastData, file = paste(predictionDir,"/prediction.csv",row.names = FALSE))
-
-
+    write.csv(forecastData, file = paste(predictionDir,"/prediction.csv",sep = ""),row.names = FALSE)
+    print("Done.") 
