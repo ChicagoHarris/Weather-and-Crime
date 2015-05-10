@@ -50,7 +50,7 @@
 
     #Train NN model
     print("Training model....")
-    ir.nn <- nnet(f, data = trainingData, size = nIter, rang = 0.1,MaxNWts = 30000, decay = 5e-4, maxit = nIter)
+    ir.nn <- nnet(f, data = trainingData, size = nHidden, rang = 0.1,MaxNWts = 30000, decay = 5e-4, maxit = nIter)
     
     #Save trained model in model directory
     print("Saving model....")
