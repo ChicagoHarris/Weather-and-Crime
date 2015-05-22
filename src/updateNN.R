@@ -5,7 +5,7 @@
 
     print("======processing input parameters==========")
 
-    if(lenth(args) != ){
+    if(length(args) != 6){
         print("[Error] Invalid Input Parameters")
         quit()
     }
@@ -37,12 +37,12 @@
 
     #load updated training data
     print("loading training data...")
-    trainingData = readRDS(file = paste(updateDataDir, "./bagTrainingData_", indexOfBaggedSamples, ".rds", sep = ""))
+    trainingData = readRDS(file = paste(updateDataDir, "/.bagTrainingData_", indexOfBaggedSamples, ".rds", sep = ""))
 
     print("Done")
 
     #load trained NN
-    trainedNN = readRDS(file = paste(modelDir, "/._NNmodel_", indexOfBaggedSamples))
+    trainedNN = readRDS(file = paste(modelDir, "/._NNmodel_", indexOfBaggedSamples, ".rds", sep = ""))
     
     nHidden = trainedNN$n[2]
     crimeTypeColumnName = c("shooting_count", "robbery_count", "assault_count")
