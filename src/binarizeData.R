@@ -101,12 +101,12 @@ binarizeData<-function(crimeData, forecastData, covariates,binningCovariates, mo
 
     print("Done.")
 
-    print("num of forecast data")
-    print(nrow(forecastData))
-    print("num of positive")
-    print(nrow(positveCrimeData))
-    print("num of negative")
-    print(nrow(negativeCrimeData))
+    #print("num of forecast data")
+    #print(nrow(forecastData))
+    #print("num of positive")
+    #print(nrow(positveCrimeData))
+    #print("num of negative")
+    #print(nrow(negativeCrimeData))
 
     # Before binarizing, we first bag the data in order to save memory
     bagAndBinaralizeTraining<-function(i){
@@ -120,8 +120,8 @@ binarizeData<-function(crimeData, forecastData, covariates,binningCovariates, mo
         contrastVector = c()
         for (variates in processedCovariates){
             if(variates != crimeType){
-            print(variates)
-            print(length(unique(crimeData[,variates])))
+            #print(variates)
+            #print(length(unique(crimeData[,variates])))
             crimeData[,variates] = factor(crimeData[,variates])
             element = paste(variates, '=contrasts(crimeData[,"',variates,'"],contrasts = F)',sep = "")
             contrastVector = c(contrastVector, element)
@@ -150,8 +150,8 @@ binarizeData<-function(crimeData, forecastData, covariates,binningCovariates, mo
 
     #Parallelize Binaralizing data
     print("Parallelize Binaralizing Bagged Training Data....")
-    bagOfTraining = lapply(c(1:numOfBaggedSamples), bagAndBinaralizeTraining) 
-
+    #bagOfTraining = lapply(c(1:numOfBaggedSamples), bagAndBinaralizeTraining) 
+    bagOfTraining = mclapply(c(1:numOfBaggedSamples), bagAndBinaralizeTraining)
     print("Done")
     result = list("bagOfTraining" = bagOfTraining, "forecastData" = forecastData)
     result
