@@ -1,3 +1,7 @@
+    #How to Run:
+    #Rscript updateNN.R [crimeType] [directory to updated data] [directory to base model file] [Index of bagged Samples: {1,2,3,...number of bagged samples}] [number of hidden node] [number of iterations] [datetime of updating]
+    #Example: Rscript updateNN.R "robbery_count" $DATAPATH $DATAPATH 1 10 "2015-05-20"
+
     library(neuralnet)
     library(nnet)
 
@@ -42,7 +46,7 @@
 
     print("Done")
 
-    #load trained NN
+    #load trained NN. Filename sample: ._NNmodel_1.rds
     trainedNN = readRDS(file = paste(modelDir, "/._NNmodel_", indexOfBaggedSamples, ".rds", sep = ""))
     
 
@@ -62,7 +66,7 @@
     ir.nn = nnet(f, data = trainingData, size = nHidden, rang = 0.1, MaxNWts = 30000, decay = 5e-4, maxit = nIter, Wts = trainedNN$wts)
 
 
-    #Save updated model in model directory
+    #Save updated model in model directory. Filename sample: ._NNmodel_1_Update_2015-05-21.rds
     print("Saving model.....")
     saveRDS(ir.nn, file = paste(modelDir, "/._NNmodel_", indexOfBaggedSamples, "_Update_", dateTime, ".rds", sep = ""))
 
