@@ -55,6 +55,7 @@
     print("Start predicting....")
 
     for (i in c(1:numOfBaggedSamples)){
+        print(paste("processing NN prediciton No.",i))
         trainedNN = readRDS(file = paste(modelDir, "/._NNmodel_", i, ".rds", sep = ""))
         predictedResult = predict(trainedNN, testingData,type = "raw")
         forecastData$prediction = forecastData$prediction + predictedResult

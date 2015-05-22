@@ -5,7 +5,7 @@
 
     print("======processing input parameters==========")
 
-    if(lenth(args) != ){
+    if(length(args) != 6){
         print("[Error] Invalid Input Parameters")
         quit()
     }
@@ -38,12 +38,12 @@
 
     #load updated training data. The updated training data is the combination of historical bagged data and the updated bagged data
     print("loading training data...")
-    trainingData = readRDS(file = paste(updateDataDir, "./bagTrainingData_", indexOfBaggedSamples, ".rds", sep = ""))
+    trainingData = readRDS(file = paste(updateDataDir, "/.bagTrainingData_", indexOfBaggedSamples, ".rds", sep = ""))
 
     print("Done")
 
-    #load trained NN. The based model we trained previously. Filename Example: ._NNmodel_1
-    trainedNN = readRDS(file = paste(modelDir, "/._NNmodel_", indexOfBaggedSamples, ""))
+    #load trained NN
+    trainedNN = readRDS(file = paste(modelDir, "/._NNmodel_", indexOfBaggedSamples, ".rds", sep = ""))
     
 
     #Get the number of hidden nodes of the trained NN
