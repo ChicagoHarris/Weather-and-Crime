@@ -47,7 +47,7 @@
 
 
     #Create a new column to hold all the predictions
-    forecastData$prediction = 0
+    predictionMatrix = matrix(0,nrow = nrow(forecastData), ncol = numOfBaggedSamples)
 
     #Making prediciton using different Neural net
 
@@ -58,11 +58,13 @@
         print(paste("processing NN prediciton No.",i))
         trainedNN = readRDS(file = paste(modelDir, "/._NNmodel_", i, ".rds", sep = ""))
         predictedResult = predict(trainedNN, testingData,type = "raw")
-        forecastData$prediction = forecastData$prediction + predictedResult
+        predictionMatrix[,i] = predictedResult
     }
     
     #Average all different predictions
-    forecastData$prediction = forecastData$prediction/ numOfBaggedSamples
+    forecastData$prediction = rowMeans(predictionMatrix)
+    forecastData$predictionSD = apply(predictionMatrix, 1, sd)
+    #forecastData$prediction = forecastData$prediction/ numOfBaggedSamples
     forecastData$predictionBinary = forecastData$prediction
     forecastData$predictionBinary[forecastData$prediction>=0.5] = 1
     forecastData$predictionBinary[forecastData$prediction<0.5] = 0
@@ -70,7 +72,9 @@
     print("Done.")
 
     print("Saving prediction file...")
-
+    
+    predictionResult = data.frame(forecastData$prediction, forecastData$predictionSD) 
     #Save prediction to csv file
-    write.csv(forecastData, file = paste(predictionDir,"/prediction.csv",sep = ""),row.names = FALSE)
+    write.csv(predictionResult, file = paste(predictionDir,"/prediction_",crimeType,".csv",sep = ""),row.names = FALSE)
     print("Done.") 
+
