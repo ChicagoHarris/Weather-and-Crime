@@ -41,10 +41,20 @@
 
 
     #load updated training data. The updated training data is the combination of historical bagged data and the updated bagged data
-    print("loading training data...")
-    trainingData = readRDS(file = paste(updateDataDir, "/.bagTrainingData_", indexOfBaggedSamples, ".rds", sep = ""))
+    print("loading historic training data...")
+    trainingData = readRDS(file = paste(updateDataDir, "/.bagTrainingData_", crimeType, "_", indexOfBaggedSamples, ".rds", sep = ""))
 
     print("Done")
+
+    print("loading updated data....")
+    updatedData = readRDS(file = paste(updateDataDir,"/.bagTrainingData_",crimeType,"_Update_",dateTime, "_Index_", indexOfBaggedSamples, ".rds", sep=""))
+
+    #Append updated data with the historic training data. And save to historic datas
+    trainingData = rbind(trainingData,updatedData)
+    saveRDS(trainingData,file = paste(updateDataDir, "/.bagTrainingData_", crimeType, "_", indexOfBaggedSamples, ".rds", sep = ""))
+
+
+
 
     #load trained NN. Filename sample: ._NNmodel_1.rds
     trainedNN = readRDS(file = paste(modelDir, "/._NNmodel_", indexOfBaggedSamples, ".rds", sep = ""))
