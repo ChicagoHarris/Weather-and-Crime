@@ -108,7 +108,7 @@
 
     ##Save bags of training data to trainingDataDir
     for (i in c(1:numOfBaggedSamples)){
-        saveRDS(data.frame(processedData$bagOfTraining[i]), file = paste(trainingDataDir,"/.bagTrainingData_",i,".rds",sep = ""))
+        saveRDS(data.frame(processedData$bagOfTraining[i]), file = paste(trainingDataDir,"/.bagTrainingData_",crimeType, "_", i,".rds",sep = ""))
 
     }
 

@@ -39,13 +39,14 @@
     #load training data
     print("loading training data...")
 
-    trainingData = readRDS(file = paste(trainingDataDir, "/.bagTrainingData_",indexOfBaggedSamples,".rds",sep = ""))
+    trainingData = readRDS(file = paste(trainingDataDir, "/.bagTrainingData_", crimeType, "_", indexOfBaggedSamples,".rds",sep = ""))
 
     print("Done.")
 
     #Prepare model formula
+    crimeTypeColumnName = c("shooting_count", "robbery_count", "assault_count")
     names = names(trainingData)
-    f <- as.formula(paste(paste(crimeType," ~"), paste(names[!names %in% crimeType], collapse = " + ")))
+    f <- as.formula(paste(paste(crimeType," ~"), paste(names[!names %in% crimeTypeColumnName], collapse = " + ")))
 
     #Train NN model
     print("Training model....")
@@ -53,7 +54,7 @@
     
     #Save trained model in model directory
     print("Saving model....")
-    saveRDS(ir.nn, file = paste(modelDir,"/._NNmodel_",indexOfBaggedSamples,".rds",sep = ""))
+    saveRDS(ir.nn, file = paste(modelDir,"/._NNmodel_",crimeType, "_", indexOfBaggedSamples,".rds",sep = ""))
 
     print(paste("Model",indexOfBaggedSamples,"Finished Training."))
 
