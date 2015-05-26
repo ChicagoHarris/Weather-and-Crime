@@ -1,0 +1,44 @@
+#!/bin/bash
+
+DATAPATH= [PATH TO DATA AND MODEL]
+
+##Prepareing Data: To pull updated crime and weather data from plenario [One month of data before current date]
+##Updated crime data will be ./crimecsvs/ChicagoCrime_Update_{YYYY_MM_DD}.csv
+##Updated weather data will be ./weatherjsons/ChicagoWeather_Update_{YYYY_MM_DD}.csv
+
+bash ./GetUpdateCrimeData
+bash ./GetUpdateWeatherData
+
+
+##Script involving postgres: To join weather and crime data to census tracts
+
+## 1. Import to postgresql census shape file. Related File: ImportToPostgresql_CensusShapefile
+## 2. Import to postgresql crime data. Related File: ImportToPostgresql_CrimeData
+## 3. Run sql query to create csv that joins weather and crimes to census tracts. Related File: censusweathercrimequery.sql
+#[After step 3, one month of joint data will be produced.]
+
+## 4. Write a sql query to only select data from the current date[We only need the data for the current date] 
+##
+
+
+
+
+
+##Bag and bin: Related File: bag_and_bin.sh.
+##Ideally, bag_and_bin.sh will take the data csv from DATAPATH, and produce bagged and bined RDS file with filename in this format: .bagTrainingData_{CrimeType}_Update_{YYYY_MM_DD}_Index_{index of the bagged samples}.rds
+# For example: .bagTrainingData_robbery_count_Update_2015_05_22_Index_5.rds
+
+
+
+
+##Submit jobs to Update Model (Before updating the model, the following script will also help to append updated binned and bagged data to historical bagged samples)
+
+
+declare -a crimeTypeNames=("robbery_count" "shooting_count" "assault_count")
+numofNN=5
+for crimeType in `${crimeTypeNames[@]}`
+do
+    bash ./parallelUpdatingScript.sh $DATAPATH $crimeType $numofNN
+done 
+
+
