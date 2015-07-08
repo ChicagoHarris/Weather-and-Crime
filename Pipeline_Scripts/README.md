@@ -1,8 +1,8 @@
 ##Pipeline
 
 This pipeline begins by pulling weather data from two sources:
-	1) Historical Metar and QCD data from Plenario
-	2) Forecast data from NOAA
+1) Historical Metar and QCD data from Plenario
+2) Forecast data from NOAA
 
 ###How to Run
 The pipeline takes approximately 30 minutes and can be ran using the the command
@@ -11,7 +11,7 @@ bash nat_pipeline.sh
 ```
 
 ###Contents
-The necessary scripts are all included here but the RDS model files are not due to size and number.
+The necessary scripts are all included but the RDS model files are not due to size and number.
 * nat_pipeline.sh
 * GetUpdateWeatherData
 * GetUpdateMetarData
