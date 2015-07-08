@@ -12,7 +12,6 @@ bash nat_pipeline.sh
 
 ###Contents
 The necessary scripts are all included here but the RDS model files are not due to size and number.
-* Run the command  
 * nat_pipeline.sh
 * GetUpdateWeatherData
 * GetUpdateMetarData
