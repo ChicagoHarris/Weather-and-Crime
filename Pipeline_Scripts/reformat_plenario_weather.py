@@ -36,6 +36,53 @@ df_forecasts = pd.read_csv('forecasts.csv')
 cols = df_forecasts.columns
 df = df[cols].append(df_forecasts)
 
+df = df.reset_index(drop=True)
+df['dod1_drybulb_fahrenheit'] = 0
+df['dod2_drybulb_fahrenheit'] = 0
+df['dod3_drybulb_fahrenheit'] = 0
+df['wow1_drybulb_fahrenheit'] = 0
+df['wow2_drybulb_fahrenheit'] = 0
+#Initialize to -1 in case there has no been no precip in the historical weather data for the past month
+df['hour_count_since_precip'] = -1
+df['precip_hour_cnt_in_last_1_week'] = 0
+df['precip_hour_cnt_in_last_1_day'] = 0
+df['precip_hour_cnt_in_last_3_day'] = 0
+
+df['window']=[(datetime.datetime.strptime(str(dt),'%Y-%m-%d %H:00:00')-datetime.datetime.today()).days for dt in df['dt'].values]
+relevant = len(df)-len(df[df['window']>=0])
+#Create lagged weather variables
+for i in range(relevant,len(df)):
+    df.ix[i,'dod1_drybulb_fahrenheit'] = df.ix[i,'drybulb_fahrenheit'] - df.ix[i-24,'drybulb_fahrenheit']
+    df.ix[i,'dod2_drybulb_fahrenheit'] = df.ix[i,'drybulb_fahrenheit'] - df.ix[i-48,'drybulb_fahrenheit']
+    df.ix[i,'dod3_drybulb_fahrenheit'] = df.ix[i,'drybulb_fahrenheit'] - df.ix[i-72,'drybulb_fahrenheit']
+    df.ix[i,'wow1_drybulb_fahrenheit'] = df.ix[i,'drybulb_fahrenheit'] - df.ix[i-168,'drybulb_fahrenheit']
+    df.ix[i,'wow2_drybulb_fahrenheit'] = df.ix[i,'drybulb_fahrenheit'] - df.ix[i-336,'drybulb_fahrenheit']
+    for j in range(1,i):
+    	if df.ix[i - j,'hourly_precip'] > .001:
+    		df.ix[i,'hour_count_since_precip'] = j
+    		break
+    precip_1wk_cnt = 0
+    precip_1d_cnt = 0
+    precip_3d_cnt = 0
+    for k in range(0,168):
+    	if df.ix[i - k,'hourly_precip'] > .001:
+    		if k <= 24:
+    			precip_1d_cnt += 1
+    			precip_1wk_cnt+=1
+    			precip_3d_cnt+=1
+    		elif k <= 72:
+    			precip_1wk_cnt+=1
+    			precip_3d_cnt+=1
+    		else:
+    			precip_1wk_cnt+=1
+    df.ix[i,'precip_hour_cnt_in_last_1_week'] = precip_1wk_cnt
+    df.ix[i,'precip_hour_cnt_in_last_1_day'] = precip_1d_cnt
+    df.ix[i,'precip_hour_cnt_in_last_3_day'] = precip_3d_cnt
+
+#Limit dataframe to only 3 days in advance
+df = df[ (df['window']>=0) & (df['window']<=3)]
+df = df.drop('window',1)
+
 f = open('census_ids.txt')
 census_ids = pd.DataFrame([ids.strip() for ids in f.readlines()])
 census_ids.columns = ['census_tra']
@@ -63,23 +110,11 @@ df['pl'] = 0
 df['fg'] = 0
 df['sa'] = 0
 df['up'] = 0
-df['fu'] = 0
+df['fu'] = 0 
 df['sq'] = 0
 df['gs'] = 0
 #Actual lags are not being calculated yet. Placeholder values below.
-df['dod1_drybulb_fahrenheit'] = 0
-df['dod2_drybulb_fahrenheit'] = 0
-df['dod3_drybulb_fahrenheit'] = 0
-df['wow1_drybulb_fahrenheit'] = 0
-df['wow2_drybulb_fahrenheit'] = 0
-df['precip_hour_cnt_in_last_1_day'] = 0
-df['precip_hour_cnt_in_last_3_day'] = 0
-df['precip_hour_cnt_in_last_1_week'] = 0
-df['hour_count_since_precip'] = 0
 
 df = df[cols]
-#Limit dataframe to only 3 days in advance
-df['window']=[(datetime.datetime.strptime(str(dt),'%Y-%m-%d %H:00:00')-datetime.datetime.today()).days for dt in df['dt'].values]
-df =df[ (df['window']>=0) & (df['window']<=3)]
-df=df.drop('window',1)
+
 df.to_csv('lagged_forecasts.csv',index=False)
