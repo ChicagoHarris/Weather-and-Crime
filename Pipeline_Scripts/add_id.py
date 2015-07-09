@@ -28,11 +28,11 @@ df = df.drop(['prediction','predictionBinary'],1)
 df['Robbery|Weather -S.E.'] = 0
 df['AllCrimes|Weather -E'] = 0
 df['AllCrimes|Weather -S.E.'] = 0
-df['Robbery Delta'] = 0
-df['Assault Delta'] = 0
-df['ViolentCrime Delta'] = 0
-df['PropertyCrime Delta'] = 0
-df['AllCrimes Delta'] = 0
+df['Robbery Delta'] = df['Robbery|Weather -E'] - df['Robbery -E']
+df['Assault Delta'] = df['Assault|Weather -E'] - df['Assault -E']
+df['ViolentCrime Delta'] = df['ViolentCrime|Weather -E'] - df['ViolentCrime -E']
+df['PropertyCrime Delta'] = df['PropertyCrime|Weather -E'] - df['PropertyCrime -E']
+df['AllCrimes Delta'] = df['AllCrimes|Weather -E'] - df['AllCrimes -E']
 
 
 
