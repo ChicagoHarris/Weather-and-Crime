@@ -15,9 +15,9 @@ bash bag_and_bin_prediction_pipeline.sh
 mv binned_forecasts.csv ..
 cd ..
 #Create robbery predictions
-Rscript testNN_robbery_edited.R "robbery_count" binned_csv/ robbery_models/ output/ 100 binned_forecasts.csv
-#Rscript testNN_robbery_edited.R "assault_count" binned_csv/ robbery_models/ output/ 100 binned_forecasts.csv
-#Rscript testNN_robbery_edited.R "shooting_count" binned_csv/ robbery_models/ output/ 100 binned_forecasts.csv
+Rscript testNN_robbery_edited.R "robbery" robbery/binned_csv/ robbery/ output/ 100 binned_forecasts.csv
+Rscript testNN_robbery_edited.R "assault" assault/binned_csv/ assault/ output/ 100 binned_forecasts.csv
+Rscript testNN_robbery_edited.R "shooting" shooting/binned_csv/ shooting/ output/ 100 binned_forecasts.csv
 cd output
 python add_id.py
 mv Crime\ Prediction\ CSV\ MOCK\ -\ revised.csv ~/Dropbox/Public/Mockup\ CSV\ Folder/
