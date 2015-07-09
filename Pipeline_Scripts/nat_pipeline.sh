@@ -12,6 +12,8 @@ cd LagBin
 
 #Bin lagged_forecats.csv; output is binned_forecasts.csv
 bash bag_and_bin_prediction_pipeline.sh
+cp forecasts.csv Weather_Forecasts.csv
+mv Weather_Forecasts.csv ~/Dropbox/Public/Mockup\ CSV\ Folder/
 mv binned_forecasts.csv ..
 cd ..
 #Create robbery predictions
