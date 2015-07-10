@@ -59,7 +59,7 @@ print("Done.")
 
 
 ## Create a thin dataframe of only the crime counts, and we'll append on the forecast # of crimes
-myvars <- c("census_tra", "dt","hournumber","wind_speed","drybulb_fahrenheit","hourly_precip","relative_humidity")
+myvars <- c("census_tra", "dt","hournumber")
 forecastData = testingData[myvars]
 
 
