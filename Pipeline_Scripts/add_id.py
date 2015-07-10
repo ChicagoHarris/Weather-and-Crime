@@ -36,6 +36,6 @@ df['AllCrimes Delta'] = df['AllCrimes|Weather -E'] - df['AllCrimes -E']
 
 
 
-cols = ['id','census_tra','dt','hournumber','ViolentCrime -E','ViolentCrime -S.E.','Assault -E','Assault -S.E.','Robbery -E','Robbery -S.E.','PropertyCrime -E','PropertyCrime -S.E.','AllCrimes -E','AllCrimes -S.E.','ViolentCrime|Weather -E','ViolentCrime|Weather -S.E.','Assault|Weather -E','Assault|Weather -S.E.','Robbery|Weather -E','Robbery|Weather -S.E.','PropertyCrime|Weather -E','PropertyCrime|Weather -S.E.','AllCrimes|Weather -E','AllCrimes|Weather -S.E.','ViolentCrime Delta','Robbery Delta','PropertyCrime Delta','AllCrimes Delta']
+cols = ['id','census_tra','dt','hournumber','ViolentCrime -E','ViolentCrime -S.E.','Assault -E','Assault -S.E.','Robbery -E','Robbery -S.E.','PropertyCrime -E','PropertyCrime -S.E.','AllCrimes -E','AllCrimes -S.E.','ViolentCrime|Weather -E','ViolentCrime|Weather -S.E.','Assault|Weather -E','Assault|Weather -S.E.','Robbery|Weather -E','Robbery|Weather -S.E.','PropertyCrime|Weather -E','PropertyCrime|Weather -S.E.','AllCrimes|Weather -E','AllCrimes|Weather -S.E.','ViolentCrime Delta','Assault Delta','Robbery Delta','PropertyCrime Delta','AllCrimes Delta']
 df = df[cols]
 df.to_csv('Crime Prediction CSV MOCK - revised.csv',index=False)
