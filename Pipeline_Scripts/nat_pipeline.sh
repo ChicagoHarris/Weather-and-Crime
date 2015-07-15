@@ -1,13 +1,16 @@
 #!/bin/sh
 #This script conducts the whole process of pulling forecast data to outputting the csv to the dropbox folder.
-DATAPATH=[PATH TO DATA AND MODEL]
-UpdaterPATH=[PATH to Updater]
-LATESTMODEL_Date=`cat UpdaterPATH/modelUpdateDate.txt`
 
-LATESTMODEL_YEAR=`cat UpdaterPATH/modelUpdateDate.txt|cut -f1 -d '-'`
-LATESTMODEL_MONTH=`cat UpdaterPATH/modelUpdateDate.txt|cut -f2 -d '-'`
-LATESTMODEL_DAY=`cat UpdaterPATH/modelUpdateDate.txt|cut -f3 -d '-'`
+# Jiajun temporary change
+#DATAPATH=[PATH TO DATA AND MODEL]
+#UpdaterPATH=[PATH to Updater]
 
+#LATESTMODEL_Date=`cat UpdaterPATH/modelUpdateDate.txt`
+#
+#LATESTMODEL_YEAR=`cat UpdaterPATH/modelUpdateDate.txt|cut -f1 -d '-'`
+#LATESTMODEL_MONTH=`cat UpdaterPATH/modelUpdateDate.txt|cut -f2 -d '-'`
+#LATESTMODEL_DAY=`cat UpdaterPATH/modelUpdateDate.txt|cut -f3 -d '-'`
+#
 bash GetUpdateWeatherData
 bash GetUpdateMetarData
 #Pull forecast data from noaa
@@ -24,6 +27,7 @@ cd LagBin
 bash bag_and_bin_prediction_pipeline.sh
 mv binned_forecasts.csv ..
 cd ..
+
 #Create robbery predictions
 #The location and the format of the NN model would be: $DATAPATH/._NNmodel_$crimeType_$indexOfBaggedSamples_Update_$LATESTMODEL_Date.rds
 
