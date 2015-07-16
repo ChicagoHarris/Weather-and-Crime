@@ -17,7 +17,7 @@ crimeType = args[1]
 
 print("===directory to input testing data===")
 print(args[2])
-testingDataDir = args[2]
+binned_csvDir = args[2]
 
 print("===directory to input model=======")
 print(args[3])
@@ -78,7 +78,7 @@ for (i in c(1:numOfBaggedSamples)){
   # The model is tied to the columns used in the file to generate it
   # Add / NA-out columns in clone_testingData as needed
   #load in i bagged sample to add columns for predictors used in i NN that are not in testingData (ie month of june)
-  baggedData = read.csv(paste(testingDataDir, "WeatherandCrime_Data.",crimeType,".",i,".binned.csv",sep=""), nrows=1)
+  baggedData = read.csv(paste(binned_csvDir, "WeatherandCrime_Data.",crimeType,".",i,".binned.csv",sep=""), nrows=1)
   baggednames = names(baggedData)
   testingnames = names(clone_testingData)
   newtestingnames = setdiff(baggednames, testingnames)
@@ -106,10 +106,10 @@ forecastData$predictionBinary[forecastData$prediction<0.5] = 0
 print("Done.")
 
 print("Saving prediction file...")
-if(crimeType == "assault" | crimeType == "shooting"){
-        forecastData<-forecastData$prediction
-}
 
 #Save prediction to csv file
+if(crimeType == "assault" | crimeType == "shooting"){
+	forecastData<-forecastData$prediction
+}
 write.csv(forecastData, file = paste(predictionDir,"prediction_",crimeType,".csv",sep = ""),row.names = FALSE)
 print("Done.") 
