@@ -2,6 +2,7 @@ import pandas as pd
 import datetime
 import numpy as np
 import time
+#import pdb
 
 df=pd.read_csv('ChicagoWeather_Update_Metar.csv')
 
@@ -95,12 +96,14 @@ final_joined = final_joined.drop(['key'],1)
 
 
 df = final_joined
-cols = ['census_tra','year','hournumber','dt','shooting_count','robbery_count','assault_count','hourstart','wind_speed','drybulb_fahrenheit','hourly_precip','relative_humidity','fz','ra','ts','br','sn','hz','dz','pl','fg','sa','up','fu','sq','gs','dod1_drybulb_fahrenheit','dod2_drybulb_fahrenheit','dod3_drybulb_fahrenheit','wow1_drybulb_fahrenheit','wow2_drybulb_fahrenheit','precip_hour_cnt_in_last_1_day','precip_hour_cnt_in_last_3_day','precip_hour_cnt_in_last_1_week','hour_count_since_precip']
+cols = ['census_tra','year','hournumber','dt','shooting_count','robbery_count','assault_count','hourstart','wind_speed','drybulb_fahrenheit','hourly_precip','relative_humidity','fz','ra','ts','br','sn','hz','dz','pl','fg','sa','up','fu','sq','gs','dod1_drybulb_fahrenheit','dod2_drybulb_fahrenheit','dod3_drybulb_fahrenheit','wow1_drybulb_fahrenheit','wow2_drybulb_fahrenheit','precip_hour_cnt_in_last_1_day','precip_hour_cnt_in_last_3_day','precip_hour_cnt_in_last_1_week','hour_count_since_precip','day_of_week','month_of_year']
 
+df['month_of_year']=pd.DatetimeIndex(df['dt']).month
+df['day_of_week']=pd.DatetimeIndex(df['dt']).dayofweek
+df['hourstart'] = df['hournumber']
 df['shooting_count'] = 0
 df['robbery_count'] = 0
 df['assault_count'] = 0
-df['hourstart'] = df['hournumber']
 df['fz'] = 0
 df['ra'] = 0
 df['ts'] = 0
@@ -117,7 +120,7 @@ df['sq'] = 0
 df['gs'] = 0
 
 df = df[cols]
-
+#pdb.set_trace()
 #df=df.tail(105240)
 df.to_csv('lagged_forecasts.csv',index=False)
 
