@@ -16,10 +16,10 @@ bash GetUpdateWeatherData
 bash GetUpdateMetarData
 #timeout 30s python forecastScraper.py
 sleep 15
-python3 forecastScraper.py
+python forecastScraper.py
 cp forecasts.csv Weather_Forecasts.csv
-mv Weather_Forecasts.csv ~/Dropbox/Public/Mockup\ CSV\ Folder/
-python3 reformat_plenario_weather.py
+mv -f Weather_Forecasts.csv ~/Dropbox/Public/Mockup\ CSV\ Folder/
+python reformat_plenario_weather.py
 mv lagged_forecasts.csv LagBin
 cd LagBin
 bash bag_and_bin_prediction_pipeline.sh
@@ -36,5 +36,5 @@ Rscript testNN_robbery_edited.R "assault" assault/binned_csv/ assault/ output/ 1
 Rscript testNN_robbery_edited.R "shooting" shooting/binned_csv/ shooting/ output/ 100 binned_forecasts.csv &
 wait
 cd output
-python3 add_id.py
+python add_id.py
 mv Crime\ Prediction\ CSV\ MOCK\ -\ revised.csv ~/Dropbox/Public/Mockup\ CSV\ Folder/
