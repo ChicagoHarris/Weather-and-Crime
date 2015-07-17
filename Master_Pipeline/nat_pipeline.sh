@@ -2,14 +2,13 @@
 
 # Jiajun temporary change
 #DATAPATH=[PATH TO DATA AND MODEL]
-#UpdaterPATH=[PATH to Updater]
+UpdaterPATH="../Updater"
 
-#LATESTMODEL_Date=`cat UpdaterPATH/modelUpdateDate.txt`
+LATESTMODEL_Date=`cat $UpdaterPATH/modelUpdateDate.txt`
 #
-#LATESTMODEL_YEAR=`cat UpdaterPATH/modelUpdateDate.txt|cut -f1 -d '-'`
-#LATESTMODEL_MONTH=`cat UpdaterPATH/modelUpdateDate.txt|cut -f2 -d '-'`
-#LATESTMODEL_DAY=`cat UpdaterPATH/modelUpdateDate.txt|cut -f3 -d '-'`
-#
+LATESTMODEL_YEAR=`cat $UpdaterPATH/modelUpdateDate.txt|cut -f1 -d '-'`
+LATESTMODEL_MONTH=`cat $UpdaterPATH/modelUpdateDate.txt|cut -f2 -d '-'`
+LATESTMODEL_DAY=`cat $UpdaterPATH/modelUpdateDate.txt|cut -f3 -d '-'`
 
 
 bash GetUpdateWeatherData
@@ -31,9 +30,9 @@ cd ..
 #The location and the format of the NN model would be: $DATAPATH/._NNmodel_$crimeType_$indexOfBaggedSamples_Update_$LATESTMODEL_Date.rds
 
 
-Rscript testNN_robbery_edited.R "robbery" robbery/binned_csv/ robbery/ output/ 100 binned_forecasts.csv &
-Rscript testNN_robbery_edited.R "assault" assault/binned_csv/ assault/ output/ 100 binned_forecasts.csv &
-Rscript testNN_robbery_edited.R "shooting" shooting/binned_csv/ shooting/ output/ 100 binned_forecasts.csv &
+Rscript testNN_robbery_edited.R "robbery_count" robbery/binned_csv/ robbery/ output/ 100 binned_forecasts.csv $LATESTMODEL_Date &
+Rscript testNN_robbery_edited.R "assault_count" assault/binned_csv/ assault/ output/ 100 binned_forecasts.csv $LATESTMODEL_Date &
+Rscript testNN_robbery_edited.R "shooting_count" shooting/binned_csv/ shooting/ output/ 100 binned_forecasts.csv $LATESTMODEL_Date &
 wait
 cd output
 python add_id.py
