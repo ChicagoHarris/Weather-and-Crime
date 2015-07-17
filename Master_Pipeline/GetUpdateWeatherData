@@ -39,7 +39,7 @@ for wban in $wbans; do
 for year in `seq $YEAR_today $YEAR_today`; do
 for month in `seq $previousMonth $MONTH_today`; do 
 
-jq -c '.objects[0].observations[]' $wban.$year.$month.json > $wban.$year.$month.obs.json
+~/.local/bin/jq -c '.objects[0].observations[]' $wban.$year.$month.json > $wban.$year.$month.obs.json
 done
 done
 done
@@ -55,7 +55,7 @@ for year in `seq $YEAR_today $YEAR_today`; do
 for month in `seq $previousMonth $MONTH_today`; do 
 file=$wban.$year.$month.obs.json
 if [ -f $file ];then
-json2csv -i $file -k wind_speed,datetime,relative_humidity,hourly_precip,drybulb_fahrenheit,wban_code >> ChicagoWeather_Update_.csv
+~/gocode/bin/json2csv -i $file -k wind_speed,datetime,relative_humidity,hourly_precip,drybulb_fahrenheit,wban_code >> ChicagoWeather_Update_.csv
 fi
 done
 done
