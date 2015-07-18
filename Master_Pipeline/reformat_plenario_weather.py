@@ -2,7 +2,7 @@ import pandas as pd
 import datetime
 import numpy as np
 import time
-#import pdb
+import pdb
 
 df=pd.read_csv('ChicagoWeather_Update_Metar.csv')
 
@@ -27,17 +27,18 @@ df_plenario = df_plenario.reset_index(drop=True)
 
 df = df.append(df_plenario)
 df = df.groupby(['dt'])['wind_speed','relative_humidity','hourly_precip','drybulb_fahrenheit'].mean()
-df['dt']=pd.to_datetime(df.index)
+df['dt']=df.index
 df=df.reset_index(drop=True)
-df['hournumber']=[dt.hour for dt in df['dt']]
-df['year'] = [dt.year for dt in df['dt']]
+df['hournumber']=[dt.hour for dt in pd.to_datetime(df['dt'])]
+df['year'] = [dt.year for dt in pd.to_datetime(df['dt'])]
 #df['dt'] = [str(dt).replace('T',' ') for dt in df.index]
 
-
+#pdb.set_trace()
 df_forecasts = pd.read_csv('forecasts.csv')
 cols = df_forecasts.columns
 df = df[cols].append(df_forecasts)
-
+df = df.groupby(['dt'])['wind_speed','relative_humidity','hourly_precip','drybulb_fahrenheit','hournumber','year'].mean()
+df['dt']=df.index
 df = df.reset_index(drop=True)
 df['dod1_drybulb_fahrenheit'] = 0
 df['dod2_drybulb_fahrenheit'] = 0
