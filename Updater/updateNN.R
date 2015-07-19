@@ -55,11 +55,14 @@
     updatedData = read.csv(paste(updateDataDir,"/WeatherandCrime_Data.",crimeType,"Update.",dateTime, ".", indexOfBaggedSamples, ".binned.csv", sep=""))
     updatedData = data.frame(updatedData)
     print("Done")
+    print(ncol(trainingData))
+    print(ncol(updatedData))
 
     #Append updated data with the historic training data. And save to historic datas
     trainingData = rbind(trainingData,updatedData)
+    print(ncol(trainingData))
     #saveRDS(trainingData,file = paste(updateDataDir, "/.bagTrainingData_", crimeType, "_", indexOfBaggedSamples, ".rds", sep = ""))
-    write.table(trainingData, file = paste(updateDataDir, "/WeatherandCrime_Data.", crimeType, ".", indexOfBaggedSamples, ".binned.csv", sep = ""))
+    write.csv(trainingData, file = paste(updateDataDir, "/WeatherandCrime_Data.", crimeType, ".", indexOfBaggedSamples, ".binned.csv", sep = ""), row.names=FALSE)
 
     print("Done")
 
@@ -71,8 +74,7 @@
     trainingData = cbind(crimeResponse, predictors)
 
     #load trained NN. Filename sample: ._NNmodel_1.rds
-    trainedNN = readRDS(file = paste(modelDir, "/._NNmodel_", indexOfBaggedSamples, ".rds", sep = ""))
-    
+    trainedNN = readRDS(file = paste(modelDir, "/._NNmodel_", indexOfBaggedSamples, ".rds", sep = "")) 
 
     #Get the number of hidden nodes of the trained NN
     nHidden = trainedNN$n[2]

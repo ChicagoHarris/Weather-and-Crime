@@ -6,7 +6,7 @@
 #Run Training Neural Nets Model by: Rscript trainModel.R [crimeType] [directory to training data] [directory to output model file] [Index of bagged Samples] [number of hidden node] [number of iterations]
 
 ##Iterations to update the model
-currentDate=`date +%Y_%m_%d`
+currentDate=`date +%Y-%m-%d`
 
 
 ##Input parameter 1 is the datapath

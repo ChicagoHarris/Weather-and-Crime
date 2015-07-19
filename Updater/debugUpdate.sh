@@ -8,7 +8,7 @@
 
 #!/bin/bash
 
-DATAPATH= [PATH TO DATA AND MODEL]
+DATAPATH=~/Updater/shooting
 
 ##Prepareing Data: To pull updated crime and weather data from plenario [One month of data before current date]
 ##Updated crime data will be ./crimecsvs/ChicagoCrime_Update_{YYYY_MM_DD}.csv
@@ -18,8 +18,8 @@ YEAR_today=`date +%Y`
 MONTH_today=`date +%m`
 DAY_today=`date +%d`
 
-bash ./GetUpdateCrimeData.sh
-bash ./GetUpdateWeatherData.sh
+#bash ./GetUpdateCrimeData.sh
+#bash ./GetUpdateWeatherData.sh
 
 
 
@@ -31,7 +31,7 @@ bash ./GetUpdateWeatherData.sh
 #[After step 3, one month of joint data will be produced.]
 ## Note: Sql query exports a csv for only data from the latest date [We only need the data for the latest date] 
 
-bash ./RunPostgres.sh weatherjsons/ChicagoWeather_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv crimecsvs/ChicagoCrime_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv
+#bash ./RunPostgres.sh weatherjsons/ChicagoWeather_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv crimecsvs/ChicagoCrime_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv
 
 
 
@@ -41,7 +41,7 @@ bash ./RunPostgres.sh weatherjsons/ChicagoWeather_Update_${YEAR_today}_${MONTH_t
 ##Ideally, bag_and_bin.sh will take the data csv from DATAPATH, and produce bagged and bined csv file with filename in this format: .bagTrainingData_{CrimeType}_Update_{YYYY_MM_DD}_Index_{index of the bagged samples}.csv
 # For example: .bagTrainingData_robbery_count_Update_2015_05_22_Index_5.csv
 
-./bag_and_bin.sh WeatherandCrime_Data_Iter.csv 100
+#./bag_and_bin.sh WeatherandCrime_Data_Iter.csv 100
 
 
 
@@ -50,18 +50,18 @@ bash ./RunPostgres.sh weatherjsons/ChicagoWeather_Update_${YEAR_today}_${MONTH_t
 #declare -a crimeTypeNames=("robbery_count" "shooting_count" "assault_count")
 
 ##Here we use numofNN = 5. But if we have 100 base NN, then we should use numofNN=100 here.
-numofNN=100
+numofNN=5
 numofIterations=10
 #for crimeType in `${crimeTypeNames[@]}`
 
-for crimeType in "robbery_count shooting_count assault_count"
+for crimeType in "shooting_count"
 do
     bash ./parallelUpdatingScript.sh $DATAPATH $crimeType $numofNN $numofIterations
 done 
 
 currentDate=`date +%Y-%m-%d`
 
-echo $currentDate > modelUpdateDate.txt
+#echo $currentDate > modelUpdateDate.txt
 
 # Script involving validation
 
