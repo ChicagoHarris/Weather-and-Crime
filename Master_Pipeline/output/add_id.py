@@ -1,9 +1,9 @@
 #This file will finish any formatting for the website by adding unique ids and creating placeholder values for variables that are missing.
 
 import pandas as pd
-df = pd.read_csv('prediction_robbery.csv')
-df_assault = pd.read_csv('prediction_assault.csv')
-df_shooting = pd.read_csv('prediction_shooting.csv')
+df = pd.read_csv('prediction_robbery_count.csv')
+df_assault = pd.read_csv('prediction_assault_count.csv')
+df_shooting = pd.read_csv('prediction_shooting_count.csv')
 
 df['dt'] = pd.to_datetime(df['dt'])
 df['id'] = df['census_tra'].astype(str)+[dt.strftime('%Y%m%d') for dt in df['dt']]+df['hournumber'].astype(str)
@@ -44,12 +44,13 @@ df.to_csv('Crime Prediction CSV MOCK - revised.csv',index=False)
 #Update the 24hrs of prediction for tomorrow only after 18:00:00 and before 20:00:00
 import datetime
 currentTime = datetime.datetime.now()
-if(currentTime.hour >= 18 and currentTime.hour < 20):
-    onedayDelta = datetime.timedelta(days = 1)
-    dateTmr = str(currentTime.date() + onedayDelta)
-    output_cols = ['census_tra', 'dt', 'hournumber', 'ViolentCrime -E', 'Assault -E', 'Robbery -E']
-    df_output = df[output_cols]
-    df_output['date'] = [str(dt.date())for dt in df_output['dt']]  
-    df_output = df_output[df_output['date'] == dateTmr]
-    df_output.to_csv('prediction_daily_' + dateTmr + '.csv', index=False)
+#if(currentTime.hour >= 18 and currentTime.hour < 20):
+onedayDelta = datetime.timedelta(days = 1)
+dateTmr = str(currentTime.date() + onedayDelta)
+output_cols = ['census_tra', 'dt', 'hournumber', 'ViolentCrime -E', 'Assault -E', 'Robbery -E']
+df_output = df[output_cols]
+df_output['date'] = [str(dt.date())for dt in df_output['dt']]  
+df_output = df_output[df_output['date'] == dateTmr]
+df_output['date'] = [str(dt.date())for dt in df_output['dt']]  
+df_output.to_csv('prediction_daily_' + dateTmr + '.csv', index=False)
 
