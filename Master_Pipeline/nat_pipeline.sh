@@ -16,9 +16,10 @@ bash GetUpdateMetarData
 #timeout 30s python forecastScraper.py
 sleep 15
 python forecastScraper.py
-cp forecasts.csv Weather_Forecasts.csv
-mv -f Weather_Forecasts.csv ~/Dropbox/Public/Mockup\ CSV\ Folder/
+#cp forecasts.csv Weather_Forecasts.csv
+#mv -f Weather_Forecasts.csv ~/Dropbox/Public/Mockup\ CSV\ Folder/
 python reformat_plenario_weather.py
+mv -f Weather_Forecasts.csv ~/Dropbox/Public/Mockup\ CSV\ Folder/
 mv lagged_forecasts.csv LagBin
 cd LagBin
 bash bag_and_bin_prediction_pipeline.sh

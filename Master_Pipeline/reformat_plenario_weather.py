@@ -84,7 +84,7 @@ for i in range(relevant,len(df)):
 
 df = df[ (df['window']>=0) & (df['window']<=2)]
 df = df.drop('window',1)
-
+df[['wind_speed','relative_humidity','hourly_precip','drybulb_fahrenheit','hournumber','year','dt']].to_csv('Weather_Forecasts.csv',index=False)
 f = open('census_ids.txt')
 census_ids = pd.DataFrame([ids.strip() for ids in f.readlines()])
 census_ids.columns = ['census_tra']
