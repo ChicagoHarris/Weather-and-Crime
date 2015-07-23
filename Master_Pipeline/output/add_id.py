@@ -4,6 +4,7 @@ import pandas as pd
 df = pd.read_csv('prediction_robbery_count.csv')
 df_assault = pd.read_csv('prediction_assault_count.csv')
 df_shooting = pd.read_csv('prediction_shooting_count.csv')
+df_accuracy = pd.read_csv('validation_accuracy.csv')
 
 df['dt'] = pd.to_datetime(df['dt'])
 df['id'] = df['census_tra'].astype(str)+[dt.strftime('%Y%m%d') for dt in df['dt']]+df['hournumber'].astype(str)
@@ -15,8 +16,8 @@ df['Assault -S.E.'] = 0
 #df['PropertyCrime -S.E.'] = 0
 df['Robbery -E'] = df['prediction'].round(decimals=3)
 df['Robbery -S.E.'] = 0
-df['AllCrimes -E'] = 0
-df['AllCrimes -S.E.'] = 0
+#df['AllCrimes -E'] = 0
+#df['AllCrimes -S.E.'] = 0
 df['ViolentCrime|Weather -E'] = df_shooting['V1'].values.round(decimals=3)
 df['ViolentCrime|Weather -S.E.'] = 0
 df['Assault|Weather -E'] = df_assault['V1'].values.round(decimals=3)
@@ -26,18 +27,23 @@ df['Assault|Weather -S.E.'] = 0
 df['Robbery|Weather -E'] = df['prediction'].round(decimals=3)
 df = df.drop(['prediction','predictionBinary'],1)
 df['Robbery|Weather -S.E.'] = 0
-df['AllCrimes|Weather -E'] = 0
-df['AllCrimes|Weather -S.E.'] = 0
+#df['AllCrimes|Weather -E'] = 0
+#df['AllCrimes|Weather -S.E.'] = 0
 df['Robbery Delta'] = df['Robbery|Weather -E'] - df['Robbery -E']
 df['Assault Delta'] = df['Assault|Weather -E'] - df['Assault -E']
 df['ViolentCrime Delta'] = df['ViolentCrime|Weather -E'] - df['ViolentCrime -E']
 #df['PropertyCrime Delta'] = df['PropertyCrime|Weather -E'] - df['PropertyCrime -E']
-df['AllCrimes Delta'] = df['AllCrimes|Weather -E'] - df['AllCrimes -E']
+#df['AllCrimes Delta'] = df['AllCrimes|Weather -E'] - df['AllCrimes -E']
 
+df = pd.merge(df, df_accuracy, on = ['hournumber'])
 
+df['ViolentCrime -S.E.'] = df['ViolentCrime Accuracy Rate']
+df['Assault -S.E.'] = df['Assault Accuracy Rate']
+df['Robbery -S.E.'] = df['Robbery Accuracy Rate']
 
-cols = ['id','census_tra','dt','hournumber','ViolentCrime -E','ViolentCrime -S.E.','Assault -E','Assault -S.E.','Robbery -E','Robbery -S.E.','AllCrimes -E','AllCrimes -S.E.','ViolentCrime|Weather -E','ViolentCrime|Weather -S.E.','Assault|Weather -E','Assault|Weather -S.E.','Robbery|Weather -E','Robbery|Weather -S.E.','AllCrimes|Weather -E','AllCrimes|Weather -S.E.']
+cols = ['id','census_tra','dt','hournumber','ViolentCrime -E','ViolentCrime -S.E.','Assault -E','Assault -S.E.','Robbery -E','Robbery -S.E.','ViolentCrime|Weather -E','ViolentCrime|Weather -S.E.','Assault|Weather -E','Assault|Weather -S.E.','Robbery|Weather -E','Robbery|Weather -S.E.']
 df = df[cols]
+df = df.sort(['dt', 'census_tra'], ascending=[1,1])
 df.to_csv('Crime Prediction CSV MOCK - revised.csv',index=False)
 
 ##Prepare first 24 hrs of prediction data of tomorrow for the use of validation_Jiajun
