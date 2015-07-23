@@ -47,7 +47,7 @@ df = df.sort(['dt', 'census_tra'], ascending=[1,1])
 df.to_csv('Crime Prediction CSV MOCK - revised.csv',index=False)
 
 ##Prepare first 24 hrs of prediction data of tomorrow for the use of validation_Jiajun
-#Update the 24hrs of prediction for tomorrow only after 18:00:00 and before 20:00:00
+#Update the 24hrs of prediction for tomorrow only after 23:00:00
 import datetime
 currentTime = datetime.datetime.now()
 #if(currentTime.hour >= 18 and currentTime.hour < 20):
