@@ -68,3 +68,4 @@ echo $currentDate > modelUpdateDate.txt
 # WeatherandCrime_Data_Iter.csv has all the data for the past month
 # Use this use the validation dataset to validate the old models. 
 
+python getValidation.py 
