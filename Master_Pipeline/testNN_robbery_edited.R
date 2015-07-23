@@ -6,7 +6,7 @@ args <- commandArgs(trailingOnly = TRUE)
 
 print("===processing input parameters====")
 
-if(length(args) != 6){
+if(length(args) != 7){
   print("[Error] Invalid Input Parameters")
   quit()
 }
@@ -37,9 +37,9 @@ print("===test file to process===")
 print(args[6])
 testingFile = args[6]
 
-print("===test iteration to log output===")
-#print(args[7])
-#testIteration = args[7]
+print("===Latest Data that the model is updated===")
+print(args[7])
+modelDate = args[7]
 
 #load testing data
 print("loading testing data")
@@ -83,7 +83,7 @@ for (i in c(1:numOfBaggedSamples)){
   testingnames = names(clone_testingData)
   newtestingnames = setdiff(baggednames, testingnames)
   clone_testingData[newtestingnames]= 0
-  trainedNN = try(readRDS(file = paste(modelDir, "/._NNmodel_", i, ".rds", sep = "")))
+  trainedNN = try(readRDS(file = paste(modelDir, "/._NNmodel_", crimeType, "_", i, "_Update_", modelDate, ".rds", sep = "")))
   if(inherits(trainedNN, "try-error")){
     next
   }
@@ -108,7 +108,7 @@ print("Done.")
 print("Saving prediction file...")
 
 #Save prediction to csv file
-if(crimeType == "assault" | crimeType == "shooting"){
+if(crimeType == "assault_count" | crimeType == "shooting_count"){
 	forecastData<-forecastData$prediction
 }
 write.csv(forecastData, file = paste(predictionDir,"prediction_",crimeType,".csv",sep = ""),row.names = FALSE)
