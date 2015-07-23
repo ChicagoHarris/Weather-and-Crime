@@ -43,6 +43,8 @@ echo "#!/bin/sh
 #PBS -o /home/mking/pbs_output
 
 DATAPATH=$DATAPATH
+MODELPATH=$MODELPATH
+
 WeatherAndCrimeROOT=/home/mking/src/
 
 cd \$WeatherAndCrimeROOT
@@ -50,7 +52,7 @@ cd \$WeatherAndCrimeROOT
 ## Add R script here
 export PATH=\$PATH:/soft/R/3.0.2/bin/
 
-Rscript updateNN.R ${CRIMETYPE} \$DATAPATH \$DATAPATH $i $numOfIterations $currentDate
+Rscript updateNN.R ${CRIMETYPE} \$DATAPATH \$MODELPATH $i $numOfIterations $currentDate
 " >> updateModel_${CRIMETYPE}_${i}.pbs
 
 
