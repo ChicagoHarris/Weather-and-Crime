@@ -38,3 +38,5 @@ wait
 cd output
 python add_id.py
 mv Crime\ Prediction\ CSV\ MOCK\ -\ revised.csv ~/Dropbox/Public/Mockup\ CSV\ Folder/
+mv validation_accuracy.csv ~/Dropbox/Public/Mockup\ CSV\ Folder/
+
