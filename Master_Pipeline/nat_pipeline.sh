@@ -19,7 +19,8 @@ python forecastScraper.py
 #cp forecasts.csv Weather_Forecasts.csv
 #mv -f Weather_Forecasts.csv ~/Dropbox/Public/Mockup\ CSV\ Folder/
 python reformat_plenario_weather.py
-mv -f Weather_Forecasts.csv ~/Dropbox/Public/Mockup\ CSV\ Folder/
+python mergeWeatherAccuracy.py
+mv -f Weather_Forecasts.csv /mnt/research_disk_1/newhome/weather_crime/Dropbox/Public
 mv lagged_forecasts.csv LagBin
 cd LagBin
 bash bag_and_bin_prediction_pipeline.sh
@@ -37,6 +38,6 @@ Rscript testNN_robbery_edited.R "shooting_count" shooting/binned_csv/ shooting/ 
 wait
 cd output
 python add_id.py
-mv Crime\ Prediction\ CSV\ MOCK\ -\ revised.csv ~/Dropbox/Public/Mockup\ CSV\ Folder/
-mv validation_accuracy.csv ~/Dropbox/Public/Mockup\ CSV\ Folder/
+mv Crime\ Prediction\ CSV\ MOCK\ -\ revised.csv /mnt/research_disk_1/newhome/weather_crime/Dropbox/Public
+cp validation_accuracy.csv /mnt/research_disk_1/newhome/weather_crime/Dropbox/Public
 
