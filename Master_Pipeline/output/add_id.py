@@ -40,16 +40,18 @@ df = pd.merge(df, df_accuracy, on = ['hournumber'])
 df['ViolentCrime -S.E.'] = df['ViolentCrime Accuracy Rate']
 df['Assault -S.E.'] = df['Assault Accuracy Rate']
 df['Robbery -S.E.'] = df['Robbery Accuracy Rate']
+import datetime
+currentTime = datetime.datetime.now()
+df['prediction_timestamp'] =currentTime.strftime('%b %d, %Y %H:%M')
 
-cols = ['id','census_tra','dt','hournumber','ViolentCrime -E','Assault -E','Robbery -E','ViolentCrime|Weather -E','Assault|Weather -E','Robbery|Weather -E',]
+cols = ['id','census_tra','dt','hournumber','ViolentCrime -E','Assault -E','Robbery -E','ViolentCrime|Weather -E','Assault|Weather -E','Robbery|Weather -E','prediction_timestamp']
 df = df[cols]
 df = df.sort(['dt', 'census_tra'], ascending=[1,1])
 df.to_csv('Crime Prediction CSV MOCK - revised.csv',index=False)
 
 ##Prepare first 24 hrs of prediction data of tomorrow for the use of validation_Jiajun
 #Update the 24hrs of prediction for tomorrow only after 23:00:00
-import datetime
-currentTime = datetime.datetime.now()
+
 #if(currentTime.hour >= 18 and currentTime.hour < 20):
 onedayDelta = datetime.timedelta(days = 1)
 dateTmr = str(currentTime.date() + onedayDelta)
