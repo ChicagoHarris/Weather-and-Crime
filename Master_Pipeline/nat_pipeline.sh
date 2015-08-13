@@ -1,5 +1,9 @@
 #!/bin/sh
 
+#Lines 22, 44, and 46 in this file need to be edited to include the correct dropbox path.
+#Line 42 in GetUpdateWeatherData and Line 43 in GetUpdateMetarData need to be edited so that the path for the jq library is correct for the specific machine being used.
+#The folders not included on the github page and that need to be added are assault, robbery, and shooting. Each of these folders need to contain the relevant RDS model files as well as an additional folder called binned_csv that contains the 100 binned csv files.
+
 # Jiajun temporary change
 #DATAPATH=[PATH TO DATA AND MODEL]
 UpdaterPATH="../Updater"
