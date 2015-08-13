@@ -3,6 +3,7 @@ import datetime
 import numpy as np
 import time
 import pdb
+import datetime
 
 df=pd.read_csv('ChicagoWeather_Update_Metar.csv')
 
@@ -84,7 +85,12 @@ for i in range(relevant,len(df)):
 
 df = df[ (df['window']>=0) & (df['window']<=2)]
 df = df.drop('window',1)
-df[['wind_speed','relative_humidity','hourly_precip','drybulb_fahrenheit','hournumber','year','dt']].to_csv('Weather_Forecasts.csv',index=False)
+
+currentTime = datetime.datetime.now()
+df['prediction_timestamp'] =currentTime.strftime('%b %d, %Y %H:%M')
+
+df[['wind_speed','relative_humidity','hourly_precip','drybulb_fahrenheit','hournumber','year','dt','prediction_timestamp']].to_csv('Weather_Forecasts.csv',index=False)
+df = df.drop('prediction_timestamp',1)
 f = open('census_ids.txt')
 census_ids = pd.DataFrame([ids.strip() for ids in f.readlines()])
 census_ids.columns = ['census_tra']
