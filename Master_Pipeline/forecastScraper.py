@@ -41,7 +41,7 @@ def pullValues(xmlsoup):
 	humidityxml = xmlsoup.data.parameters.humidity.findAll('value')
 	temp  = [float(val.text) for val in tempxml]
 	humidity = [float(val.text) for val in humidityxml]
-	wind = [float(val.text) for val in xmlsoup.data.parameters.findAll('wind-speed')[0].findAll('value')]
+	wind = [float(val.text)*1.15078 for val in xmlsoup.data.parameters.findAll('wind-speed')[0].findAll('value')]
 	cloudy = [float(val.text) for val in xmlsoup.data.parameters.findAll('cloud-amount')[0].findAll('value')]
 
 	convhazard = xmlsoup.data.parameters.findAll('convective-hazard')
