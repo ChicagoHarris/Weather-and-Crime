@@ -132,12 +132,32 @@ if __name__ == "__main__":
 	url3 = prefix + '60026' + suffix
 	url4 = prefix + '46406' + suffix
 	url5 = prefix + '60605' + suffix
-	df_output1 = wban_df(url1,14819)
-	df_output2 = wban_df(url2,94846)
-	df_output3 = wban_df(url3,14855)
-	df_output4 = wban_df(url4,'04807')
-	df_output5 = wban_df(url5,94866)
-	df_output = df_output1.append(df_output2,ignore_index=True).append(df_output3,ignore_index=True).append(df_output4,ignore_index=True).append(df_output5,ignore_index=True)
+	try:
+		df_output = wban_df(url1,14819)
+	except:
+		print '14819 failed'
+	try:
+		df_output2 = wban_df(url2,94846)
+		df_output.append(df_output2,ignore_index=True)
+	except:
+		print '94846 failed'
+	try:
+		df_output3 = wban_df(url3,14855)
+		df_output.append(df_output3,ignore_index=True)
+	except:
+		print '14855 failed'
+	try:
+		df_output4 = wban_df(url4,'04807')
+		df_output.append(df_output4,ignore_index=True)
+	except:
+		print '04807 failed'
+	try:
+		df_output5 = wban_df(url5,94866)
+		df_output.append(df_output5,ignore_index=True)
+	except:
+		print '94866 failed'
+
+#	df_output = df_output1.append(df_output2,ignore_index=True).append(df_output3,ignore_index=True).append(df_output4,ignore_index=True).append(df_output5,ignore_index=True)
 	#cols = ['wind_direction','datetime','report_type','wetbulb_fahrenheit','id','station_type','sky_condition','hourly_precip','drybulb_fahrenheit','latitude','wban_code','old_station_type','visibility','wind_direction_cardinal','sealevel_pressure','weather_types','wind_speed','sky_condition_top','longitude','relative_humidity','dewpoint_fahrenheit','station_pressure']
 	cols = ['wind_speed','datetime','relative_humidity','hourly_precip','drybulb_fahrenheit','dewpoint_fahrenheit','wetbulb_fahrenheit','wban_code' ]
 	df_output = df_output[cols]
