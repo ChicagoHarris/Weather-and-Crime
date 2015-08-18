@@ -56,7 +56,7 @@ def pullValues(xmlsoup):
 	for kind in precipxml:
 		preciptye = kind['type']
 		if preciptye == 'liquid':
-			rain = [float(val.text) for val in kind.findAll('value')]
+			rain = [float(val.text)/6 for val in kind.findAll('value')]
 		elif preciptye == 'snow':
 			snow = [float(val.text) for val in kind.findAll('value')]
 		else:
