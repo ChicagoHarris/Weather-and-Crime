@@ -7,7 +7,7 @@ import bs4
 from datetime import datetime
 import time
 import numpy as np
-
+import pdb
 
 #Pull the different datetime intervals
 def pullDatetimes(xmlsoup):
@@ -84,13 +84,14 @@ def joinDataFrames(predictions,dt):
 	forecasts2 = forecasts2.set_index('dates')
 	forecasts3 = forecasts3.set_index('dates')
 	forecasts4 = forecasts4.set_index('dates')
-	forecasts = forecasts.join(forecasts2).join(forecasts3).join(forecasts4)
+	
+	forecasts = forecasts.join(forecasts2,how='outer').join(forecasts3,how='outer').join(forecasts4,how='outer')
 	forecasts['year'] = [datetime.strptime(dt, "%Y-%m-%dT%H:00:00-05:00").year for dt in forecasts.index.values]
 	forecasts['month'] = [datetime.strptime(dt, "%Y-%m-%dT%H:00:00-05:00").month for dt in forecasts.index.values]
 	forecasts['day'] = [datetime.strptime(dt, "%Y-%m-%dT%H:00:00-05:00").day for dt in forecasts.index.values]
 	forecasts['hour'] = [datetime.strptime(dt, "%Y-%m-%dT%H:00:00-05:00").hour for dt in forecasts.index.values]
 	forecasts['datetime'] = [val[:-6] for val in forecasts.index.values]
-	#forecasts['datetime'] = forecasts[['year','month','day']].apply(lambda row: '-'.join(map(str, row)), axis=1)
+
 	#forecasts['datetime'] = forecasts['datetime'] +' '+ forecasts['hour'].map(str) +':00'
 	forecasts = forecasts.drop(['year','month','day','hour'], 1)
 	return forecasts
@@ -160,6 +161,7 @@ if __name__ == "__main__":
 #	df_output = df_output1.append(df_output2,ignore_index=True).append(df_output3,ignore_index=True).append(df_output4,ignore_index=True).append(df_output5,ignore_index=True)
 	#cols = ['wind_direction','datetime','report_type','wetbulb_fahrenheit','id','station_type','sky_condition','hourly_precip','drybulb_fahrenheit','latitude','wban_code','old_station_type','visibility','wind_direction_cardinal','sealevel_pressure','weather_types','wind_speed','sky_condition_top','longitude','relative_humidity','dewpoint_fahrenheit','station_pressure']
 	cols = ['wind_speed','datetime','relative_humidity','hourly_precip','drybulb_fahrenheit','dewpoint_fahrenheit','wetbulb_fahrenheit','wban_code' ]
+	
 	df_output = df_output[cols]
 	df_output = df_output.groupby(['datetime'])['wind_speed','relative_humidity','hourly_precip','drybulb_fahrenheit'].mean()
 	df_output['datetime'] = [dt.replace('T',' ') for dt in df_output.index]
