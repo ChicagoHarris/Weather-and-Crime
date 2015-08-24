@@ -53,8 +53,8 @@ cd \$WeatherAndCrimeROOT
 export PATH=\$PATH:/soft/R/3.0.2/bin/
 
 Rscript updateNN.R ${CRIMETYPE} \$DATAPATH \$MODELPATH $i $numOfIterations $currentDate
+Rscript updateNN_NoWeather.R ${CRIMETYPE} \$DATAPATH \$MODELPATH $i $numOfIterations $currentDate
 " >> updateModel_${CRIMETYPE}_${i}.pbs
-
 
 ##uncomment this to submit .pbs file
 
