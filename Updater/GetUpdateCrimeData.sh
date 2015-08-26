@@ -8,9 +8,14 @@ YEAR_today=`date +%Y`
 MONTH_today=`date +%m`
 DAY_today=`date +%d`
 
-previousMonth=`date --date="$(date +%Y-%m-%d) -1 month" +%m`
-previousDay=`date --date="$(date +%Y-%m-%d) -1 month" +%d`
-previousYear=`date --date="$(date +%Y-%m-%d) -1 month" +%Y`
+previousMonth=$(expr $MONTH_today - 1)
+previousDay=$MONTH_today
+previousYear=$YEAR_today
+
+if [ $previousMonth -eq 0 ]; then
+previousMonth=12
+previousYear=$(expr $previousYear - 1)
+fi
 
 
 url="http://plenar.io/v1/api/detail/?dataset_name=crimes_2001_to_present&obs_date__ge=$previousYear-$previousMonth-$previousDay&obs_date__lt=$YEAR_today-$MONTH_today-$DAY_today&data_type=csv"
