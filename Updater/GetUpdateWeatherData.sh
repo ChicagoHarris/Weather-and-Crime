@@ -23,7 +23,13 @@ for wban in $wbans; do
 for year in `seq $LatestData_YEAR $LatestData_YEAR`; do
 for month in `seq $LatestData_MONTH $LatestData_MONTH`; do 
 
+echo $LatestData_DAY
+echo $LatestData_YEAR
+echo $LatestData_MONTH
+
+
 previousMonth=$(($month - 1))
+echo $previousMonth
 nextyear=$year
 if [ $previousMonth -eq 0 ]; then
 previousMonth=12

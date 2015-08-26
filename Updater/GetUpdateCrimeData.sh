@@ -8,12 +8,16 @@ YEAR_today=`date +%Y`
 MONTH_today=`date +%m`
 DAY_today=`date +%d`
 
-previousMonth=$(($MONTH_today - 1))
+previousMonth=`date --date="$(date +%Y-%m-%d) -1 month" +%m`
+previousDay=`date --date="$(date +%Y-%m-%d) -1 month" +%d`
+previousYear=`date --date="$(date +%Y-%m-%d) -1 month" +%Y`
 
-url="http://plenar.io/v1/api/detail/?dataset_name=crimes_2001_to_present&obs_date__ge=$YEAR_today-$previousMonth-$DAY_today&obs_date__lt=$YEAR_today-$MONTH_today-$DAY_today&data_type=csv"
+
+url="http://plenar.io/v1/api/detail/?dataset_name=crimes_2001_to_present&obs_date__ge=$previousYear-$previousMonth-$previousDay&obs_date__lt=$YEAR_today-$MONTH_today-$DAY_today&data_type=csv"
 
 
 echo $url
+echo $previousMonth
 
 curl -o temp.csv $url
 cut -d ',' -f 6- temp.csv > ChicagoCrime_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv
@@ -23,7 +27,7 @@ size=1
 offset=1000
 while [ $size -gt 0 ]
 do
-    url="http://plenar.io/v1/api/detail/?dataset_name=crimes_2001_to_present&obs_date__ge=$YEAR_today-$previousMonth-$DAY_today&obs_date__lt=$YEAR_today-$MONTH_today-$DAY_today&offset=$offset&data_type=csv"
+    url="http://plenar.io/v1/api/detail/?dataset_name=crimes_2001_to_present&obs_date__ge=$previousYear-$previousMonth-$previousDay&obs_date__lt=$YEAR_today-$MONTH_today-$DAY_today&offset=$offset&data_type=csv"
     echo $url
     curl -o temp.csv $url
     cut -d ',' -f 6- temp.csv > temp1.csv
