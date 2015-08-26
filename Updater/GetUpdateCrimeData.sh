@@ -9,7 +9,7 @@ MONTH_today=`date +%m`
 DAY_today=`date +%d`
 
 previousMonth=$(expr $MONTH_today - 1)
-previousDay=$MONTH_today
+previousDay=$DAY_today
 previousYear=$YEAR_today
 
 if [ $previousMonth -eq 0 ]; then
