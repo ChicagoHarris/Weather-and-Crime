@@ -1,14 +1,8 @@
-# Notes to Jiajun : 
-# 1. [In RunPostgres.sh] Parameters passed in line 7 need to update automatically with latest csv available. 
-# 2. [In RunPostgres.sh] Weather data should go back far enough to create lagged variables for each day in the data. 
-# 3. [On line 45 in this script] What number should this be in a cron job?
-# 4. After complete run of this script, it should do two things: 
-# A) Link with prediction pipeline script if all are run in ANL. 
-# B) Provide evaluation metrics so that we can evaluate updater. 
-
 #!/bin/bash
 
-DATAPATH= [PATH TO DATA AND MODEL]
+#DATAPATH= [PATH TO DATA AND MODEL]
+DATAPATH="/Users/maggieking/Documents/WeatherandCrime/datapath"
+
 
 ##Prepareing Data: To pull updated crime and weather data from plenario [One month of data before current date]
 ##Updated crime data will be ./crimecsvs/ChicagoCrime_Update_{YYYY_MM_DD}.csv

@@ -1,5 +1,6 @@
 # How to Run: 
 # ./bag_and_bin.sh inputfile numberofbags [use cached main file -never applicable in the updater]
+helperDir="../Helpers"
 
 set +x
 if [[ "z$1" == "z" ]]; then
@@ -75,7 +76,7 @@ for crime in shooting robbery assault; do
 		tmpBinnedFile=$binnedFile.tmp
 
 		echo " Pulling $NumberOfOnes total rows into $iterZeroesFile"
-		perl randlines.pl $NumberOfOnes $zeroesFile > $iterZeroesFile
+		perl $helperDir/randlines.pl $NumberOfOnes $zeroesFile > $iterZeroesFile
 
 		foundZeros=$(wc -l $iterZeroesFile | awk '{print $1 }') 
 		echo " Found $foundZeros Zeroes in $iterZeroesFile"
@@ -87,34 +88,34 @@ for crime in shooting robbery assault; do
 		cat $iterZeroesFile >> $baggedFile
 
 		echo " Binning $baggedFile to $binnedFile"
-		awk -F, -f bin_1_temperature.awk $baggedFile \
-			| awk -F, -f bin_2_wind.awk \
-			| awk -F, -f bin_4_rain.awk \
-			| awk -F, -f bin_5_humidity.awk \
-			| awk -F, -f bin_wow_1.awk \
-			| awk -F, -f bin_wow_2.awk \
-			| awk -F, -f bin_dod_1.awk \
-			| awk -F, -f bin_dod_2.awk \
-			| awk -F, -f bin_dod_3.awk \
-			| awk -F, -f bin_rain_count_1day.awk \
-			| awk -F, -f bin_rain_count_2day.awk \
-			| awk -F, -f bin_rain_count_1week.awk \
-			| awk -F, -f bin_count_SINCE_rain.awk \
+		awk -F, -f $helperDir/bin_1_temperature.awk $baggedFile \
+			| awk -F, -f $helperDir/bin_2_wind.awk \
+			| awk -F, -f $helperDir/bin_4_rain.awk \
+			| awk -F, -f $helperDir/bin_5_humidity.awk \
+			| awk -F, -f $helperDir/bin_wow_1.awk \
+			| awk -F, -f $helperDir/bin_wow_2.awk \
+			| awk -F, -f $helperDir/bin_dod_1.awk \
+			| awk -F, -f $helperDir/bin_dod_2.awk \
+			| awk -F, -f $helperDir/bin_dod_3.awk \
+			| awk -F, -f $helperDir/bin_rain_count_1day.awk \
+			| awk -F, -f $helperDir/bin_rain_count_2day.awk \
+			| awk -F, -f $helperDir/bin_rain_count_1week.awk \
+			| awk -F, -f $helperDir/bin_count_SINCE_rain.awk \
 			> $binnedFile
 
-		awk -F, -v column="37" -f unpivot.awk $binnedFile $binnedFile > $tmpBinnedFile
+		awk -F, -v column="37" -f $helperDir/unpivot.awk $binnedFile $binnedFile > $tmpBinnedFile
 		mv $tmpBinnedFile $binnedFile
 
-		awk -F, -v column="36" -f unpivot.awk $binnedFile $binnedFile > $tmpBinnedFile
+		awk -F, -v column="36" -f $helperDir/unpivot.awk $binnedFile $binnedFile > $tmpBinnedFile
 		mv $tmpBinnedFile $binnedFile
 		
-		awk -F, -v column="2" -f unpivot.awk $binnedFile $binnedFile > $tmpBinnedFile
+		awk -F, -v column="2" -f $helperDir/unpivot.awk $binnedFile $binnedFile > $tmpBinnedFile
 		mv $tmpBinnedFile $binnedFile
 
-		awk -F, -v column="3" -f unpivot.awk $binnedFile $binnedFile > $tmpBinnedFile
+		awk -F, -v column="3" -f $helperDir/unpivot.awk $binnedFile $binnedFile > $tmpBinnedFile
 		mv $tmpBinnedFile $binnedFile
 
-		awk -F, -v column="1" -f unpivot.awk $binnedFile $binnedFile > $tmpBinnedFile
+		awk -F, -v column="1" -f $helperDir/unpivot.awk $binnedFile $binnedFile > $tmpBinnedFile
 		mv $tmpBinnedFile $binnedFile
 	
 		gzip -f $binnedFile

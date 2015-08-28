@@ -2,6 +2,7 @@
 
 --run CrimeImport.sql and weatherimport.sql if not already done, to create crime and weather tables, respectively. 
 
+alter table crime add column crimehour timestamp;
 --create spatial index on censustracts table
 CREATE INDEX ix_censustracts ON censustracts using GIST(geom);
 --create geom column on crime table
@@ -41,13 +42,12 @@ and crime.id = B.id
 
 
 -- Clean up the crime table's time to make subsequent joins easier/faster
-alter table crime add column crimehour timestamp;
 update crime set crimehour = date_trunc('hour', dt) ;
 create index ix_crime_crimehour on crime (crimehour, primarytype);
 
 
 --Create weather view. Create one weather reading for each hour (by averaging across all stations with reads). And creating binary variables for weather types (ie rain, snow)
-DROP VIEW weather_final;
+DROP VIEW if exists weather_final;
 
 CREATE OR REPLACE VIEW weather_final
 AS
@@ -163,5 +163,6 @@ left join
 order by hourstart_series, ct.census_tra
 )
 -- TO '/Users/maggiek/Public/Drop Box/WeatherandCrime_Data_Testing.csv' WITH csv HEADER
-TO '/Users/jeff/wsPersonal/WeatherAndCrimeLatest/Updater/WeatherandCrime_Data_Iter.csv' WITH csv HEADER
+--TO '/Users/jeff/wsPersonal/WeatherAndCrimeLatest/Updater/WeatherandCrime_Data_Iter.csv' WITH csv HEADER
+TO '/Users/maggieking/Documents/WeatherandCrime/Weather-and-Crime/Updater/WeatherandCrime_Data_Iter.csv' WITH csv HEADER
 ;

@@ -27,6 +27,6 @@ Location varchar(100) );
 -- COPY crime FROM '/Users/maggiek/Desktop/ChicagoCrime.csv' DELIMITER ',' CSV header;
 
 -- Note: change location for ANL when access is restored. 
-COPY crime FROM '/Users/jeff/wsPersonal/WeatherAndCrimeLatest/Updater/crimecsvs/ChicagoCrime.csv' DELIMITER ',' CSV header;
+--COPY crime FROM '/Users/jeff/wsPersonal/WeatherAndCrimeLatest/Updater/crimecsvs/ChicagoCrime.csv' DELIMITER ',' CSV header;
 
 

@@ -65,7 +65,7 @@ for year in `seq $LatestData_YEAR $LatestData_YEAR`; do
 for month in `seq $LatestData_MONTH $LatestData_MONTH`; do 
 file=$wban.$year.$month.obs.json
 if [ -f $file ];then
-json2csv -i $file -k wind_speed,sealevel_pressure,old_station_type,station_type,sky_condition,wind_direction,sky_condition_top,visibility,datetime,wind_direction_cardinal,relative_humidity,hourly_precip,drybulb_fahrenheit,report_type,dewpoint_fahrenheit,station_pressure,weather_types,wetbulb_fahrenheit,wban_code >> ChicagoWeather_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv
+$HOME/work/bin/json2csv -i $file -k wind_speed,sealevel_pressure,old_station_type,station_type,sky_condition,wind_direction,sky_condition_top,visibility,datetime,wind_direction_cardinal,relative_humidity,hourly_precip,drybulb_fahrenheit,report_type,dewpoint_fahrenheit,station_pressure,weather_types,wetbulb_fahrenheit,wban_code >> ChicagoWeather_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv
 fi
 done
 done

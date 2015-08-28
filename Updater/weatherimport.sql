@@ -24,11 +24,13 @@ wetbulb_fahrenheit varchar(100),
 wban_code integer
 ) ;
 
---COPY weather FROM '/Users/maggiek/Desktop/sc/Weatherandcrime/data/ChicagoWeather.csv' DELIMITER ',' CSV header;
-
--- Note: change location for ANL when access is restored. 
-COPY weather FROM '/Users/jeff/wsPersonal/WeatherAndCrimeLatest/Updater/weatherjsons/ChicagoWeather.csv' DELIMITER ',' CSV header;
-
 CREATE INDEX ix_station ON weather (wban_code, dttime);
 
 CREATE INDEX ix_time ON weather (dttime, wind_speed, drybulb_fahrenheit, hourly_precip, relative_humidity, weather_types);
+
+--COPY weather FROM '/Users/maggiek/Desktop/sc/Weatherandcrime/data/ChicagoWeather.csv' DELIMITER ',' CSV header;
+
+-- Note: change location for ANL when access is restored. 
+--COPY weather FROM '/Users/jeff/wsPersonal/WeatherAndCrimeLatest/Updater/weatherjsons/ChicagoWeather.csv' DELIMITER ',' CSV header;
+--COPY weather FROM "\:weathercsv" DELIMITER ',' CSV header;
+
