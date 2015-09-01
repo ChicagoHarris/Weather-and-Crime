@@ -3,8 +3,7 @@
 #DATAPATH= [PATH TO DATA AND MODEL]
 DATAPATH="/Users/maggieking/Documents/WeatherandCrime/datapath"
 
-
-##Prepareing Data: To pull updated crime and weather data from plenario [One month of data before current date]
+##Preparing Data: To pull updated crime and weather data from plenario [One month of data before current date]
 ##Updated crime data will be ./crimecsvs/ChicagoCrime_Update_{YYYY_MM_DD}.csv
 ##Updated weather data will be ./weatherjsons/ChicagoWeather_Update_{YYYY_MM_DD}.csv
 
@@ -36,6 +35,13 @@ bash ./RunPostgres.sh weatherjsons/ChicagoWeather_Update_${YEAR_today}_${MONTH_t
 # For example: .bagTrainingData_robbery_count_Update_2015_05_22_Index_5.csv
 
 ./bag_and_bin.sh WeatherandCrime_Data_Iter.csv 100
+for crimeType in "robbery" "shooting" "assault"
+do 
+    cd $crimeType
+    gunzip *
+    cp -r . $DATAPATH/$crimeType
+    cd ..
+done
 
 
 
@@ -43,14 +49,15 @@ bash ./RunPostgres.sh weatherjsons/ChicagoWeather_Update_${YEAR_today}_${MONTH_t
 
 #declare -a crimeTypeNames=("robbery_count" "shooting_count" "assault_count")
 
-##Here we use numofNN = 5. But if we have 100 base NN, then we should use numofNN=100 here.
-numofNN=100
-numofIterations=10
+##Here we use numofNN = number of base nns. Ie, if we have 100 base NN, then we should use numofNN=100 here.
+numOfNN=1
+numOfIterations=1
 #for crimeType in `${crimeTypeNames[@]}`
 
-for crimeType in "robbery_count shooting_count assault_count"
+#for crimeType in "robbery_count shooting_count assault_count"
+for crimeType in "robbery" "shooting" "assault"
 do
-    bash ./parallelUpdatingScript.sh $DATAPATH $crimeType $numofNN $numofIterations
+    bash ./parallelUpdatingScript.sh $DATAPATH $crimeType $numOfNN $numOfIterations
 done 
 
 currentDate=`date +%Y-%m-%d`

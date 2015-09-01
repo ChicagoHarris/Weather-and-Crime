@@ -59,4 +59,11 @@ psql -f "$postGisScriptDir/spatial_ref_sys.sql" weatherandcrime
 shp2pgsql -s 3435 Census_Tracts/Census_Tracts.shp public.censustracts weatherandcrime > censustracts.sql
 psql weatherandcrime < censustracts.sql
 
+# R updater section
+R
+install.packages("nnet")
+install.packages("neuralnet")
 # End Initialize Section.
+
+# To pull most recent models output from server: 
+scp maggiek@128.135.232.75:/mnt/research_disk_1/newhome/weather_crime/Weather-and-Crime/Master_Pipeline/output/prediction_daily*.csv ./

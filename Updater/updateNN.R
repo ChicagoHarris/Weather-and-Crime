@@ -9,7 +9,7 @@
 
     print("======processing input parameters==========")
 
-    if(length(args) != 6){
+    if(length(args) != 7){
         print("[Error] Invalid Input Parameters")
         quit()
     }
@@ -18,26 +18,30 @@
     print("======crime type========")
     print(args[1])
     crimeType = args[1]
+    
+    print("======yvar========")
+    print(args[2])
+    yvar = args[2]
 
     print("=====directory to updated data========")
-    print(args[2])
-    updateDataDir = args[2]
+    print(args[3])
+    updateDataDir = args[3]
 
     print("======directory to input model========")
-    print(args[3])
-    modelDir = args[3]
+    print(args[4])
+    modelDir = args[4]
 
     print("======Index of Bagged Samples=========") 
-    print(args[4])
-    indexOfBaggedSamples = as.integer(args[4])
+    print(args[5])
+    indexOfBaggedSamples = as.integer(args[5])
 
     print("=====Number of Updating Iterations============")
-    print(args[5])
-    nIter = as.integer(args[5])
+    print(args[6])
+    nIter = as.integer(args[6])
 
     print("====Datetime of updating=============")
-    print(args[6])
-    dateTime = args[6]
+    print(args[7])
+    dateTime = args[7]
 
 
     #load updated training data. The updated training data is the combination of historical bagged data and the updated bagged data
@@ -52,7 +56,10 @@
 
     print("loading updated data....")
     #updatedData = readRDS(file = paste(updateDataDir,"/.bagTrainingData_",crimeType,"_Update_",dateTime, "_Index_", indexOfBaggedSamples, ".rds", sep=""))
-    updatedData = read.csv(paste(updateDataDir,"/WeatherandCrime_Data.",crimeType,"Update.",dateTime, ".", indexOfBaggedSamples, ".binned.csv", sep=""))
+    #commented out this line bc didn't match up 
+    #updatedData = read.csv(paste(updateDataDir,"/WeatherandCrime_Data.",crimeType,"Update.",dateTime, ".", indexOfBaggedSamples, ".binned.csv", sep=""))
+    # added to fix above
+    updatedData = read.csv(paste(updateDataDir,"/WeatherandCrime_Data", "_Iter", ".", crimeType, ".", indexOfBaggedSamples, ".binned.csv", sep=""))
     updatedData = data.frame(updatedData)
     print("Done")
     print(ncol(trainingData))
@@ -66,11 +73,12 @@
 
     print("Done")
 
-    ##Prepare the actuall data need to be trained.
+    ##Prepare the actual data need to be trained.
     names = names(trainingData)
     predictors = trainingData[!names %in% c("shooting_count", "census_tra", "year", "hournumber", "dt", "robbery_count", "assault_count", "hourstart", "wind_speed", "drybulb_fahrenheit", "hourly_precip", "relative_humidity", "dod1_drybulb_fahrenheit", "dod2_drybulb_fahrenheit", "dod3_drybulb_fahrenheit", "wow1_drybulb_fahrenheit", "wow2_drybulb_fahrenheit", "precip_hour_cnt_in_last_1_day", "precip_hour_cnt_in_last_3_day", "precip_hour_cnt_in_last_1_week", "hour_count_since_precip", "month_of_year", "day_of_week")]
 
-    crimeResponse = trainingData[crimeType]
+    #crimeResponse = trainingData[crimeType]
+    crimeResponse = trainingData[yvar]
     trainingData = cbind(crimeResponse, predictors)
 
     #load trained NN. Filename sample: ._NNmodel_1.rds
@@ -80,12 +88,12 @@
     nHidden = trainedNN$n[2]
 
     #Get the model formula to prepare to update the new NN.
-    #crimeTypeColumnName = c("shooting_count", "robbery_count", "assault_count")
+    #yvarColumnName = c("shooting_count", "robbery_count", "assault_count")
     #names = names(trainingData)
     #f <- as.formula(paste(paste(crimeType," ~"), paste(names[!names %in% crimeTypeColumnName], collapse = " + ")))
-    #Here trainingData[2:1113] is selected based on Maggie's testNN.R; Need to be careful about this hardcoded index of columns
-    f <- as.formula(paste(crimeType, paste('~', paste(colnames(trainingData), collapse = '+'))))   
-
+    #f <- as.formula(paste(crimeType, paste('~', paste(colnames(trainingData), collapse = '+'))))   
+    f <- as.formula(paste(yvar, paste('~', paste(colnames(trainingData), collapse = '+'))))   
+    
 
 
     #Update NN model; Key trick here it to specify "Wts = trainedNN$wts". This allow us to extract the weight parameter trained in the previous NN and start updating weights from there.
