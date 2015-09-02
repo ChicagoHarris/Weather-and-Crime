@@ -64,7 +64,14 @@ df2['ViolentCrime Accuracy Rate'] = df2['ViolentCrime Accuracy Rate'].values.rou
 outputCol = ['hournumber', 'Assault Accuracy Rate', 'Robbery Accuracy Rate', 'ViolentCrime Accuracy Rate']
 df2 = df2[outputCol]
 
+##This is the accuracy file we will post on the website(overwrite the old one)
 df2.to_csv(dir_output + 'validation_accuracy.csv', index = False)
+
+##This is the accuracy file we will post on the github(don't overwrite the old one)
+import datetime
+now = datetime.datetime.now()
+currentDate = now.strftime(%Y-%m-%d)
+df2.to_csv(dir_output + 'validation_accuracy' + currentDate + ".csv", index = False)
 
 
 
