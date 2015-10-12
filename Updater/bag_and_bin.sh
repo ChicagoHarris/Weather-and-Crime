@@ -1,6 +1,6 @@
 # How to Run: 
-# ./bag_and_bin.sh inputfile numberofbags [use cached main file -never applicable in the updater]
-helperDir="../Helpers"
+# ./bag_and_bin.sh inputfile numberofbags [TRUE/FALSE to use cached main file -never applicable in the updater] DownsamplingFactor
+helperDir="../../../Helpers"
 
 set +x
 if [[ "z$1" == "z" ]]; then
@@ -19,6 +19,14 @@ if [[ "z$3" == "z1" ]]; then
 else
 	useCachedMainOnesAndZeroes="false"
 fi
+
+if [[ "z$4" == "z" ]]; then
+	echo "No multiple parameter passed in, defaulting to creating balanced samples"
+	MultipleOfZeroes=1
+else
+	MultipleOfZeroes=$4
+fi
+
 input=$1
 baseName=$( echo $1 | sed 's/.csv//' )
 bagDir="bag"
@@ -76,7 +84,15 @@ for crime in shooting robbery assault; do
 		tmpBinnedFile=$binnedFile.tmp
 
 		echo " Pulling $NumberOfOnes total rows into $iterZeroesFile"
-		perl $helperDir/randlines.pl $NumberOfOnes $zeroesFile > $iterZeroesFile
+		#For perfrectly balanced samples run this line:
+		#perl $helperDir/randlines.pl $NumberOfOnes $zeroesFile > $iterZeroesFile
+		
+		#For tuned downsamples instead of perfectly balanced samples, run this line and define the tuning parameter $MultipleOfZeroes first
+		set -x
+		echo $NumberOfOnes
+		numberofzeroes=$(($MultipleOfZeroes*$NumberOfOnes))
+		perl $helperDir/randlines.pl $numberofzeroes $zeroesFile > $iterZeroesFile
+		set +x
 
 		foundZeros=$(wc -l $iterZeroesFile | awk '{print $1 }') 
 		echo " Found $foundZeros Zeroes in $iterZeroesFile"

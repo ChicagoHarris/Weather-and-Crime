@@ -1,0 +1,11 @@
+Training_Pipeline/AccessData/FormatDataScripts/testing_data/WeatherandCrime_Data_Testing.csv
+Training_Pipeline/AccessData/FormatDataScripts/WeatherandCrime_Data.csv
+Updater/.Rhistory
+Updater/.pgpass
+Updater/assault/
+Updater/crimecsvs/
+Updater/robbery/
+Updater/shooting/
+Updater/weatherjsons/
+Training_Pipeline/Data
+Training_Pipeline/Eval/transfer_to_anl.rtf

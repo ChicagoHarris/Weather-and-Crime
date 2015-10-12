@@ -1,0 +1,68 @@
+#!/bin/bash
+
+#brew install jq
+#brew install wget
+#brew install go
+#go get github.com/jehiah/json2csv
+
+mkdir weatherjsons
+cd weatherjsons
+
+YEAR_today=`date +%Y`
+MONTH_today=`date +%m`
+DAY_today=`date +%d`
+
+
+
+wbans="94846 14855 04807 14819 94866 04831"
+for wban in $wbans; do
+for year in `seq $YEAR_today $YEAR_today`; do
+for month in `seq $MONTH_today $MONTH_today`; do 
+
+previousMonth=$(($month - 1))
+nextyear=$year
+if [ $previousMonth -eq 0 ]; then
+previousMonth=12
+nextyear=$year
+fi
+
+url="http://plenar.io/v1/api/weather/hourly/?wban_code=$wban&datetime__ge=$year-$previousMonth-$DAY_today&datetime__lt=$year-$month-$DAY_today"
+#url="http://plenar.io/v1/api/weather/metar/?wban_code=94846&datetime__ge=2015-05-22"
+echo $url
+curl -o $wban.$year.$month.json $url
+sleep 5
+done
+done
+done
+
+wbans="94846 14855 04807 14819 94866 04831"
+for wban in $wbans; do
+for year in `seq $YEAR_today $YEAR_today`; do
+for month in `seq $MONTH_today $MONTH_today`; do 
+
+jq -c '.objects[0].observations[]' $wban.$year.$month.json > $wban.$year.$month.obs.json
+done
+done
+done
+
+######make sure you are in ONYL a weatherjsons folder before you run following command— deletes all files below 1k within folder
+find . -size -1k -name "*.json" -delete
+
+echo "wind_speed,sealevel_pressure,old_station_type,station_type,sky_condition,wind_direction,sky_condition_top,visibility,datetime,wind_direction_cardinal,relative_humidity,hourly_precip,drybulb_fahrenheit,report_type,dewpoint_fahrenheit,station_pressure,weather_types,wetbulb_fahrenheit,wban_code" > ChicagoWeather_Update_${YEAR_today}_${MONTH_today}_${DAY_today}_Metar.csv
+
+wbans="94846 14855 04807 14819 94866 04831"
+for wban in $wbans; do
+for year in `seq $YEAR_today $YEAR_today`; do
+for month in `seq $MONTH_today $MONTH_today`; do 
+file=$wban.$year.$month.obs.json
+if [ -f $file ];then
+json2csv -i $file -k wind_speed,sealevel_pressure,old_station_type,station_type,sky_condition,wind_direction,sky_condition_top,visibility,datetime,wind_direction_cardinal,relative_humidity,hourly_precip,drybulb_fahrenheit,report_type,dewpoint_fahrenheit,station_pressure,weather_types,wetbulb_fahrenheit,wban_code >> ChicagoWeather_Update_${YEAR_today}_${MONTH_today}_${DAY_today}_Metar.csv
+fi
+done
+done
+done
+
+
+
+
+

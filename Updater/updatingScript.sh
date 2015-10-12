@@ -34,7 +34,7 @@ bash ./RunPostgres.sh weatherjsons/ChicagoWeather_Update_${YEAR_today}_${MONTH_t
 ##Ideally, bag_and_bin.sh will take the data csv from DATAPATH, and produce bagged and bined csv file with filename in this format: .bagTrainingData_{CrimeType}_Update_{YYYY_MM_DD}_Index_{index of the bagged samples}.csv
 # For example: .bagTrainingData_robbery_count_Update_2015_05_22_Index_5.csv
 
-./bag_and_bin.sh WeatherandCrime_Data_Iter.csv 100
+./bag_and_bin.sh WeatherandCrime_Data_Iter.csv 100 FALSE
 for crimeType in "robbery" "shooting" "assault"
 do 
     cd $crimeType

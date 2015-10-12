@@ -1,0 +1,30 @@
+#imports crime data into postgresql table
+
+CREATE TABLE Crime2 
+(ID int, 
+CaseNumber varchar(100), 
+Dt timestamp, 
+Block varchar(100), 
+IUCR varchar(100), 
+PrimaryType varchar(100), 
+Description varchar(1000),
+LocationDescription varchar(1000),
+Arrest varchar(25),
+Domestic varchar(25),
+Beat int,
+District int,
+Ward int,
+CommunityArea varchar(25),
+FBICode varchar(25),
+XCoordinate double precision,
+YCoordinate double precision,
+Year int,
+UpdatedOn varchar(100),
+Latitude double precision,
+Longitude double precision,
+Location varchar(100) ); 
+
+COPY Crime2 FROM '/Users/maggiek/Desktop/ChicagoCrime.csv' DELIMITER ',' CSV header;
+
+#if you want to inspect the data, run the following command 
+select * from crime2 LIMIT 250;
