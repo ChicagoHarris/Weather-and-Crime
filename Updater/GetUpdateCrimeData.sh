@@ -62,3 +62,4 @@ rm datetimeTemp.csv
 rm datetimeTemp1.csv
 rm datetimeTemp2.csv
 rm sorted.csv
+rm temp1.csv
