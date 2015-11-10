@@ -6,7 +6,8 @@ Crime data is from the City of Chicago. Weather data is from NOAA, via the Plena
 
 This project is funded by a grant from the Arnold Foundation and is housed at the University of Chicago.
 
-DEPENDENCIES:
+Dependencies & Set-up
+============
 Run CrimeScapeInitializer.sh to install these
 
 - Postgres (installed in manual_initialization.txt)
@@ -20,8 +21,13 @@ DATABASE & R INITIALIZATION:
 
 The database will need to be initialized once using postgres. Instructions on how to this are found in manual_initialization.txt. This file will need to be run line by line in the terminal as output will need to be adjusted based on the output from the installing scripts. Usernames and passwords will also need to be set manually in postgres.
 
-UPDATER PIPELINE:
+Training Pipeline:
+================
+- Initialized through manually loaded data following directions in AccessData/GetDataScripts. 
+- Create Postgres database and import data from local storage and join with files in ImportDataScripts
 
+Updater Pipeline:
+================
 Main function is updatingScript.sh in Updater folder. 
 
  - Updates the crime and weather data from the same date in the prior month to the current date. 
