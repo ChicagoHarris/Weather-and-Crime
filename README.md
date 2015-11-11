@@ -21,14 +21,26 @@ DATABASE & R INITIALIZATION:
 
 The database will need to be initialized once using postgres. Instructions on how to this are found in manual_initialization.txt. This file will need to be run line by line in the terminal as output will need to be adjusted based on the output from the installing scripts. Usernames and passwords will also need to be set manually in postgres.
 
+Master Pipeline:
+================
+Main file: Master_pipeline/nat_pipeline.sh 
+	Gets new weather data for the last 30 days and runs it through a saved model. This model assumes saved crime data and 
+	models as detailed in the documentation on the file.
+	
+- testNN_*.R files run current weather and crime data through models that have already been trained and saved
+- User will need to adjust file locations in pipeline to output data to their desired locations.
+
+	
+
 Training Pipeline:
 ================
-- Initialized through manually loaded data following directions in AccessData/GetDataScripts. 
+- Initialized through manually loaded data following directions in AccessData/GetDataScripts, log locations where data is stored. 
 - Create Postgres database and import data from local storage and join with files in ImportDataScripts
+- Bags observations of crimes into 100 files and bins weather data
 
 Updater Pipeline:
 ================
-Main function is updatingScript.sh in Updater folder. 
+Main function: Updater/updatingScript.sh
 
  - Updates the crime and weather data from the same date in the prior month to the current date. 
  	GetUpdateCrimeData.sh - Updates crime data from Plenario API for all of the City of Chicago
@@ -44,6 +56,11 @@ Main function is updatingScript.sh in Updater folder.
 
  - Update model with new data and saves model to a datapath/{crimename} directory
   - parallelUpdatingScript.sh
+  - 
+  
+Helpers
+=========
+- Contains awk scripts with information about how weather data is binned
 
 
 
