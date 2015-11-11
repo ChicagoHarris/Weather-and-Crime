@@ -1,10 +1,3 @@
-#!/bin/bash
-
-#brew install jq
-#brew install wget
-#brew install go
-#go get github.com/jehiah/json2csv
-
 mkdir weatherjsons
 cd weatherjsons
 
@@ -23,14 +16,14 @@ for wban in $wbans; do
 for year in `seq $LatestData_YEAR $LatestData_YEAR`; do
 for month in `seq $LatestData_MONTH $LatestData_MONTH`; do 
 
-previousMonth=$(($month - 1))
-nextyear=$year
-if [ $previousMonth -eq 0 ]; then
-previousMonth=12
-nextyear=$year
-fi
-day=$(($LatestData_DAY + 1))
-url="http://plenar.io/v1/api/weather/hourly/?wban_code=$wban&datetime__ge=$year-$previousMonth-$day&datetime__lt=$year-$month-$day"
+# Set early date to 30 days prior to Latest Dat
+priorMonth=`date -jf  "%Y%m%d" -v-30d $year$month$LatestData_DAY +"%m"`
+priorYear=`date -jf  "%Y%m%d" -v-30d $year$month$LatestData_DAY +"%Y"`
+priorDay=`date -jf  "%Y%m%d" -v-30d $year$month$LatestData_DAY +"%d"`
+day =`date -jf "%Y%m%d" -v+1d $year$month$LatestData_DAY +"%d"`
+
+
+url="http://plenar.io/v1/api/weather/hourly/?wban_code=$wban&datetime__ge=$priorYear-$priorMonth-$priorDay&datetime__lt=$year-$month-$day"
 echo $url
 curl -o $wban.$year.$month.json $url
 sleep 5
