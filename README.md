@@ -56,7 +56,6 @@ Main function: Updater/updatingScript.sh
 
  - Update model with new data and saves model to a datapath/{crimename} directory
   - parallelUpdatingScript.sh
-  - 
   
 Helpers
 =========
