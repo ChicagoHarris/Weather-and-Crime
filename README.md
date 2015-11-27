@@ -61,6 +61,10 @@ Helpers
 =========
 - Contains awk scripts with information about how weather data is binned
 
+Additional Background
+=========
+Read more about the data and model <a href="http://chicagoharris.github.io/Weather-and-Crime">here</a>.
+
 
 
 
