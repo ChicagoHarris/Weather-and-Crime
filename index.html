@@ -94,6 +94,30 @@
 
 <p>We further evaluate our model along several different metrics. We calculate a <a href="http://www.dataschool.io/simple-guide-to-confusion-matrix-terminology/">confusion matrix</a> every week for our updated model that compares the predicted values with what actually happened. The metrics in the confusion matrix are calculated in the following way:</p>
 
+<table border="1">
+<tr>
+<td></td>
+<td colspan = "3">Actual Value (confirmed by occurrences)</td>
+</tr>
+<tr>
+<td rowspan = "3">Predicted Value
+(predicted by the model)</td>
+<td></td>
+<td>Positive</td>
+<td>Negative</td>
+</tr>
+<tr>
+<td>Positive</td>
+<td>TP (True Positive)</td>
+<td>FP (False Positive)</td>
+</tr>
+<tr>
+<td>Negative</td>
+<td>FN (False Negative)</td>
+<td>TN (True Negative)</td>
+</tr>
+</table>
+
 <p>Actual Value (confirmed by occurrences)</p>
 
 <p>Predicted Value (predicted by the model)</p>
