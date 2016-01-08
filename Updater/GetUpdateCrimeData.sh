@@ -20,10 +20,8 @@ url="http://plenar.io/v1/api/detail/?dataset_name=crimes_2001_to_present&obs_dat
 echo $url
 echo $previousMonth
 
-curl -o temp.csv $url
-cut -d ',' -f 6- temp.csv > ChicagoCrime_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv
+curl -o ChicagoCrime_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv $url
 
-rm temp.csv
 
 
 size=1
@@ -32,8 +30,7 @@ while [ $size -gt 0 ]
 do
     url="http://plenar.io/v1/api/detail/?dataset_name=crimes_2001_to_present&obs_date__ge=$previousYear-$previousMonth-$previousDay&obs_date__lt=$YEAR_today-$MONTH_today-$DAY_today&offset=$offset&data_type=csv&dup_ver=1"
     echo $url
-    curl -o temp.csv $url
-    cut -d ',' -f 6- temp.csv > temp1.csv
+    curl -o temp1.csv $url
     tail -n +2 temp1.csv > temp.csv
     size=$(cat temp.csv | wc -l)
     echo $size
