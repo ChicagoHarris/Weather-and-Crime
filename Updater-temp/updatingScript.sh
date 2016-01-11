@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #DATAPATH= [PATH TO DATA AND MODEL]
-mkdir datapath
-DATAPATH=$(pwd)/datapath #update
+mkdir bagged_data
+DATAPATH=$(pwd)/bagged_data #update
 
 ##Preparing Data: To pull updated crime and weather data from plenario [One month of data before current date]
 ##Updated crime data will be ./crimecsvs/ChicagoCrime_Update_{YYYY_MM_DD}.csv
@@ -12,8 +12,8 @@ YEAR_today=`date +%Y`
 MONTH_today=`date +%m`
 DAY_today=`date +%d`
 
-bash ./GetUpdateCrimeData.sh
-bash ./GetUpdateWeatherData.sh
+#bash ./GetUpdateCrimeData.sh
+#bash ./GetUpdateWeatherData.sh
 
 
 
@@ -25,7 +25,7 @@ bash ./GetUpdateWeatherData.sh
 #[After step 3, one month of joint data will be produced.]
 ## Note: Sql query exports a csv for only data from the latest date [We only need the data for the latest date] 
 
-bash ./RunPostgres.sh weatherjsons/ChicagoWeather_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv crimecsvs/ChicagoCrime_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv
+#bash ./RunPostgres.sh weatherjsons/ChicagoWeather_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv crimecsvs/ChicagoCrime_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv
 
 
 
@@ -35,7 +35,7 @@ bash ./RunPostgres.sh weatherjsons/ChicagoWeather_Update_${YEAR_today}_${MONTH_t
 ##Ideally, bag_and_bin.sh will take the data csv from DATAPATH, and produce bagged and bined csv file with filename in this format: .bagTrainingData_{CrimeType}_Update_{YYYY_MM_DD}_Index_{index of the bagged samples}.csv
 # For example: .bagTrainingData_robbery_count_Update_2015_05_22_Index_5.csv
 
-./bag_and_bin.sh WeatherandCrime_Data_Iter.csv 100 FALSE
+bash ./bag_and_bin.sh WeatherandCrime_Data_Iter.csv 5 FALSE
 for crimeType in "robbery" "shooting" "assault"
 do 
     cd $crimeType

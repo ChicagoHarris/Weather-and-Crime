@@ -47,7 +47,7 @@
     #load updated training data. The updated training data is the combination of historical bagged data and the updated bagged data
     print("loading historic training data...")
     #trainingData = readRDS(file = paste(updateDataDir, "/.bagTrainingData_", crimeType, "_", indexOfBaggedSamples, ".rds", sep = ""))
-    trainingData = read.csv(paste(updateDataDir, "/WeatherandCrime_Data.", crimeType, ".", indexOfBaggedSamples, ".binned.csv", sep = ""))
+    trainingData = read.csv(paste(updateDataDir, "/WeatherandCrime_Data_Iter.", crimeType, ".", indexOfBaggedSamples, ".binned.csv", sep = ""))
     trainingData = data.frame(trainingData)
 
 

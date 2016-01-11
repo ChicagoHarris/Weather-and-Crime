@@ -1,4 +1,4 @@
-./bag_and_bin.sh WeatherandCrime_Data_Iter.csv 100 FALSE
+#./bag_and_bin.sh WeatherandCrime_Data_Iter.csv 100 FALSE 1 datapath
 # How to Run: 
 # ./bag_and_bin.sh inputfile numberofbags [TRUE/FALSE to use cached main file -never applicable in the updater] DownsamplingFactor
 helperDir="../Helpers" #####CHANGING DIRECTORY
@@ -29,6 +29,7 @@ else
 	MultipleOfZeroes=$4
 fi
 
+
 input=$1
 baseName=$( echo $1 | sed 's/.csv//' )
 bagDir="bag"
@@ -54,8 +55,8 @@ for crime in shooting robbery assault; do
 	onesFile=$dir/$baseName.$crime.ones.csv
 	zeroesFile=$dir/$baseName.$crime.zeroes.csv
 
-	awkOneCmd="NR>1 {if ($"${crimeCsvColumn}' >= 1 && 2009 <= $2 && $2 <= 2013) print $0}'
-	awkZeroCmd="NR>1 {if ($"${crimeCsvColumn}' == 0 && 2009 <= $2 && $2 <= 2013) print $0}'
+	awkOneCmd="NR>1 {if ($"${crimeCsvColumn}' >= 1) print $0}'
+	awkZeroCmd="NR>1 {if ($"${crimeCsvColumn}' == 0) print $0}'
 
 	# Use 2009 - 2013 for training
 	if [ "$useCachedMainOnesAndZeroes" == "true" ] && [ -e $onesFile ]; then
@@ -75,7 +76,6 @@ for crime in shooting robbery assault; do
 	# Find how many zeros to pull
 	NumberOfOnes=$(wc -l $onesFile | awk '{print $1 }')
 	echo " Found $NumberOfOnes rows with One"
-	exit 0
 	for iter in $(seq 1 $NumBags); do
 		echo " Starting iteration $iter @ $(date)"
 
