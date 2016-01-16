@@ -1,4 +1,4 @@
-# CrimeScape Initializer
+	# CrimeScape Initializer
 # For Updater Pipeline
 # Run from project's Updater directory: Weather-and-Crime/Updater/
 
@@ -22,6 +22,7 @@ go get github.com/jehiah/json2csv
 
 ## For Formatting the data
 
+#for Linux follow instructions here: http://www.postgresonline.com/journal/archives/329-An-almost-idiots-guide-to-install-PostgreSQL-9.3,-PostGIS-2.1-and-pgRouting-with-Yum.html
 #postgis
 brew install postgis
 
