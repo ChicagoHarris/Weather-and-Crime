@@ -29,7 +29,7 @@
     
     print("======directory to input model========")
     print(args[4])
-    modelDir = args[4]
+    modelDir = paste('no_weather_',args[4])
     
     print("======Index of Bagged Samples=========") 
     print(args[5])
