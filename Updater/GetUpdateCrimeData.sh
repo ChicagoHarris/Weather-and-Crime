@@ -14,7 +14,7 @@ previousDay=`date -v-30d +%d`
 previousYear=`date -v-30d +%Y`
 
 
-url="http://plenar.io/v1/api/detail/?dataset_name=crimes_2001_to_present&obs_date__ge=$previousYear-$previousMonth-$previousDay&obs_date__lt=$YEAR_today-$MONTH_today-$DAY_today&data_type=csv&dup_ver=1"
+url="http://plenar.io/v1/api/detail/?dataset_name=crimes_2001_to_present&obs_date__ge=$previousYear-$previousMonth-$previousDay&obs_date__lt=$YEAR_today-$MONTH_today-$DAY_today&data_type=csv"
 
 
 echo $url
@@ -28,7 +28,7 @@ size=1
 offset=1000 #Only 1000 rows are pulled each time
 while [ $size -gt 0 ]
 do
-    url="http://plenar.io/v1/api/detail/?dataset_name=crimes_2001_to_present&obs_date__ge=$previousYear-$previousMonth-$previousDay&obs_date__lt=$YEAR_today-$MONTH_today-$DAY_today&offset=$offset&data_type=csv&dup_ver=1"
+    url="http://plenar.io/v1/api/detail/?dataset_name=crimes_2001_to_present&obs_date__ge=$previousYear-$previousMonth-$previousDay&obs_date__lt=$YEAR_today-$MONTH_today-$DAY_today&offset=$offset&data_type=csv"
     echo $url
     curl -o temp1.csv $url
     tail -n +2 temp1.csv > temp.csv

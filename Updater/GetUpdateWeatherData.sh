@@ -19,6 +19,7 @@ LatestData_DAY=`cat ../crimecsvs/latestDate.txt|cut -f3 -d '-'`
 
 
 wbans="94846 14855 04807 14819 94866 04831"
+
 for wban in $wbans; do
 for year in `seq $LatestData_YEAR $LatestData_YEAR`; do
 for month in `seq $LatestData_MONTH $LatestData_MONTH`; do 
@@ -26,7 +27,7 @@ for month in `seq $LatestData_MONTH $LatestData_MONTH`; do
 priorMonth=`date -jf  "%Y%m%d" -v-30d $year$month$LatestData_DAY +"%m"`
 priorYear=`date -jf  "%Y%m%d" -v-30d $year$month$LatestData_DAY +"%Y"`
 priorDay=`date -jf  "%Y%m%d" -v-30d $year$month$LatestData_DAY +"%d"`
-	
+
 url="http://plenar.io/v1/api/weather/hourly/?wban_code=$wban&datetime__ge=$priorYear-$priorMonth-$priorDay&datetime__lt=$year-$month-$LatestData_DAY"
 echo $url
 curl -o $wban.$year.$month.json $url

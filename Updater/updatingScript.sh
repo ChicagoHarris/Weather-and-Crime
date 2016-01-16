@@ -60,7 +60,7 @@ numOfIterations=15
 #for crimeType in "robbery_count shooting_count assault_count"
 for crimeType in "robbery" "shooting" "assault"
 do
-    bash ./parallelUpdatingScript.sh $DATAPATH $crimeType $numOfNN $numOfIterations
+    bash ./parallelUpdatingScript.sh $DATAPATH $crimeType $numOfNN $numOfIterations $MODELPATH
 done 
 
 currentDate=`date +%Y-%m-%d`
