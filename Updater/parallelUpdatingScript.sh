@@ -13,7 +13,6 @@ currentDate=`date +%Y-%m-%d`
 DATAPATH=$1
 echo $DATAPATH
 
-MODELPATH=$1
 
 ##Input parameter 2 is the CRIMETYPE
 CRIMETYPE=$2
@@ -25,6 +24,9 @@ echo $numOfNN
 
 numOfIterations=$4
 echo $numOfIterations
+
+MODELPATH=$5
+echo $MODELPATH
 
 for i in `seq 1 $numOfNN`
 

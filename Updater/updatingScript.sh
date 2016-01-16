@@ -3,6 +3,8 @@
 #DATAPATH= [PATH TO DATA AND MODEL]
 mkdir bagged_data
 DATAPATH=$(pwd)/bagged_data #update
+MODELPATH='/data/Master_Pipeline'
+
 
 ##Preparing Data: To pull updated crime and weather data from plenario [One month of data before current date]
 ##Updated crime data will be ./crimecsvs/ChicagoCrime_Update_{YYYY_MM_DD}.csv
@@ -12,8 +14,8 @@ YEAR_today=`date +%Y`
 MONTH_today=`date +%m`
 DAY_today=`date +%d`
 
-#bash ./GetUpdateCrimeData.sh
-#bash ./GetUpdateWeatherData.sh
+bash ./GetUpdateCrimeData.sh
+bash ./GetUpdateWeatherData.sh
 
 
 
@@ -25,7 +27,7 @@ DAY_today=`date +%d`
 #[After step 3, one month of joint data will be produced.]
 ## Note: Sql query exports a csv for only data from the latest date [We only need the data for the latest date] 
 
-#bash ./RunPostgres.sh weatherjsons/ChicagoWeather_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv crimecsvs/ChicagoCrime_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv
+bash ./RunPostgres.sh weatherjsons/ChicagoWeather_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv crimecsvs/ChicagoCrime_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv
 
 
 
@@ -35,7 +37,7 @@ DAY_today=`date +%d`
 ##Ideally, bag_and_bin.sh will take the data csv from DATAPATH, and produce bagged and bined csv file with filename in this format: .bagTrainingData_{CrimeType}_Update_{YYYY_MM_DD}_Index_{index of the bagged samples}.csv
 # For example: .bagTrainingData_robbery_count_Update_2015_05_22_Index_5.csv
 
-bash ./bag_and_bin.sh WeatherandCrime_Data_Iter.csv 100 FALSE
+bash ./bag_and_bin.sh WeatherandCrime_Data_Iter.csv 100 FALSE 1
 for crimeType in "robbery" "shooting" "assault"
 do 
     cd $crimeType
@@ -51,8 +53,8 @@ done
 #declare -a crimeTypeNames=("robbery_count" "shooting_count" "assault_count")
 
 ##Here we use numofNN = number of base nns. Ie, if we have 100 base NN, then we should use numofNN=100 here.
-numOfNN=1
-numOfIterations=1
+numOfNN=100
+numOfIterations=15
 #for crimeType in `${crimeTypeNames[@]}`
 
 #for crimeType in "robbery_count shooting_count assault_count"

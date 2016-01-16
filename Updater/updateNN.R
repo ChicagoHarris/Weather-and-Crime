@@ -47,7 +47,7 @@
     #load updated training data. The updated training data is the combination of historical bagged data and the updated bagged data
     print("loading historic training data...")
     #trainingData = readRDS(file = paste(updateDataDir, "/.bagTrainingData_", crimeType, "_", indexOfBaggedSamples, ".rds", sep = ""))
-    trainingData = read.csv(paste(updateDataDir, "/WeatherandCrime_Data.", crimeType, ".", indexOfBaggedSamples, ".binned.csv", sep = ""))
+    trainingData = read.csv(paste(updateDataDir, "/WeatherandCrime_Data_Iter.", crimeType, ".", indexOfBaggedSamples, ".binned.csv", sep = ""))
     trainingData = data.frame(trainingData)
 
 
@@ -82,7 +82,7 @@
     trainingData = cbind(crimeResponse, predictors)
 
     #load trained NN. Filename sample: ._NNmodel_1.rds
-    trainedNN = readRDS(file = paste(modelDir, "/._NNmodel_", indexOfBaggedSamples, ".rds", sep = "")) 
+    trainedNN = readRDS(file = paste(modelDir,'/',crimeType, "/._NNmodel_", indexOfBaggedSamples, ".rds", sep = "")) 
 
     #Get the number of hidden nodes of the trained NN
     nHidden = trainedNN$n[2]
@@ -104,7 +104,7 @@
 
     #Save updated model in model directory. Filename sample: ._NNmodel_1_Update_2015-05-21.rds
     print("Saving model.....")
-    saveRDS(ir.nn, file = paste(modelDir, "/._NNmodel_", crimeType, "_", indexOfBaggedSamples, "_Update_", dateTime, ".rds", sep = ""))
+    saveRDS(ir.nn, file = paste(modelDir,'/',crimeType, "/._NNmodel_", crimeType, "_", indexOfBaggedSamples, "_Update_", dateTime, ".rds", sep = ""))
 
     print(paste("Model_", indexOfBaggedSamples, "Finished Updating on ", dateTime))
 
