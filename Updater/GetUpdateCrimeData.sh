@@ -9,10 +9,10 @@ MONTH_today=`date +%m`
 DAY_today=`date +%d`
 
 #Set to prior 30 days
-previousMonth=`date -v-30d +%m`
-previousDay=`date -v-30d +%d`
-previousYear=`date -v-30d +%Y`
 
+previousMonth=`date +%m -d "30 days ago"`
+previousYear=`date +%Y -d "30 days ago"`
+previousDay=`date +%d -d "30 days ago"`
 
 url="http://plenar.io/v1/api/detail/?dataset_name=crimes_2001_to_present&obs_date__ge=$previousYear-$previousMonth-$previousDay&obs_date__lt=$YEAR_today-$MONTH_today-$DAY_today&data_type=csv"
 
