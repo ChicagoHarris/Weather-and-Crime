@@ -42,6 +42,8 @@ Updater Pipeline:
 ================
 Main function: Updater/updatingScript.sh
 
+This pipeline runs new models taking the previous run of models as a baseline and updating them to include more up-to-date data, in this case, the last 30 days of data are included. The old models are stored in archived folder with their date and the new ones are copied to the active server.
+
  - Updates the crime and weather data from the same date in the prior month to the current date. 
  	GetUpdateCrimeData.sh - Updates crime data from Plenario API for all of the City of Chicago
 	GetUpdateWeatherData.sh - Updates weather data from Plenario API from 4 stations in the Chicago area
