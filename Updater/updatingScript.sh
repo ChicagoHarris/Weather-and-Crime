@@ -1,9 +1,10 @@
 #!/bin/bash
 
-#DATAPATH= [PATH TO DATA AND MODEL]
-mkdir bagged_data
-DATAPATH=$(pwd)/bagged_data #update
-MODELPATH='/data/Master_Pipeline'
+# Assumes these paths are created and models exist in active models grouped in folders by crime type
+DATAPATH=$(pwd)/bagged_data
+MODELPATH=$(pwd)/active_models
+ARCHIVE=$(pwd)/model_archive
+AWS_PATH='../../data/Master_Pipeline/' # Relative path to models from home directory on EC2 instance currently assumes each crime is in its own folder
 
 
 ##Preparing Data: To pull updated crime and weather data from plenario [One month of data before current date]
@@ -14,9 +15,13 @@ YEAR_today=`date +%Y`
 MONTH_today=`date +%m`
 DAY_today=`date +%d`
 
+cur_date=$MONTH_today-$DAY_today-$YEAR_today
+
+# Backup current models, active ones will be overwritten by newer ones
+cp -r active_models/ model_archive/$cur_date
+
 bash ./GetUpdateCrimeData.sh
 bash ./GetUpdateWeatherData.sh
-
 
 
 ##Script involving postgres: To join weather and crime data to census tracts
@@ -28,9 +33,6 @@ bash ./GetUpdateWeatherData.sh
 ## Note: Sql query exports a csv for only data from the latest date [We only need the data for the latest date] 
 
 bash ./RunPostgres.sh weatherjsons/ChicagoWeather_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv crimecsvs/ChicagoCrime_Update_${YEAR_today}_${MONTH_today}_${DAY_today}.csv
-
-
-
 
 
 ##Bag and bin: Related File: bag_and_bin.sh.
@@ -73,3 +75,8 @@ echo $currentDate > modelUpdateDate.txt
 # Use this use the validation dataset to validate the old models. 
 
 python getValidation.py 
+
+# Copy new models to EC2 instance, requires working .pem to transfer. Will overwrite files with the same name on the AWS instance
+scp -r  -i uccdUser-key-pair.pem $ARCHIVE/.  ec2-user@ec2-52-35-83-231.us-west-2.compute.amazonaws.com:$AWS_PATH
+
+

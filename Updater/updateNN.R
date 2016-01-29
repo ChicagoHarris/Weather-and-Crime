@@ -102,9 +102,9 @@
     ir.nn = nnet(f, data = trainingData, size = nHidden, rang = 0.1, MaxNWts = 30000, decay = 5e-4, maxit = nIter, Wts = trainedNN$wts)
 
 
-    #Save updated model in model directory. Filename sample: ._NNmodel_1_Update_2015-05-21.rds
+    # Overwrites existing active model with newer one, backup already created in archive
     print("Saving model.....")
-    saveRDS(ir.nn, file = paste("data/Weather-and-Crime/Updater/temp_model_storage", "/._NNmodel_", crimeType, "_", indexOfBaggedSamples, "_Update_", dateTime, ".rds", sep = ""))
+    saveRDS(ir.nn, file = paste(modelDir,'/',crimeType, "/._NNmodel_", indexOfBaggedSamples, ".rds", sep = ""))
 
     print(paste("Model_", indexOfBaggedSamples, "Finished Updating on ", dateTime))
 
