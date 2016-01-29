@@ -11,6 +11,6 @@ Updater/shooting/
 Updater/weatherjsons/
 Training_Pipeline/Data
 Training_Pipeline/Eval/transfer_to_anl.rtf
-model_archive/shooting
-model_archive/assault
-model_archive/robbery
+model_archive/shooting/*
+model_archive/assault/*
+model_archive/robbery/*
