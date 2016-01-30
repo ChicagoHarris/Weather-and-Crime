@@ -164,5 +164,5 @@ order by hourstart_series, ct.census_tra
 )
 -- TO '/Users/maggiek/Public/Drop Box/WeatherandCrime_Data_Testing.csv' WITH csv HEADER
 --TO '/Users/jeff/wsPersonal/WeatherAndCrimeLatest/Updater/WeatherandCrime_Data_Iter.csv' WITH csv HEADER
-TO '/data/Weather-and-Crime/Updater/WeatherandCrime_Data_Iter.csv' WITH csv HEADER
+TO 'WeatherandCrime_Data_Iter.csv' WITH csv HEADER
 ;
