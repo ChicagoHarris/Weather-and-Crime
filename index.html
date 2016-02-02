@@ -34,7 +34,7 @@
       <h1>
 <a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span class="octicon octicon-link"></span></a>How it works</h1>
 
-        <p>CrimeScape predicts when and where violent criminal activity is likely to occur in the City of Chicago. Currently, the model predicts the likelihood of sudden violent criminal activity (shootings and homicides, aggravated assaults, and armed robberies) down to the hour and census tract area. CrimeScape calculates the relative chance of crime in each census tract compared to the citywide average at a given hour.</p>
+        <p>CrimeScape predicts when and where violent criminal activity is likely to occur in the City of Chicago. Currently, the model predicts the likelihood of sudden violent criminal activity (shootings and homicides, aggravated assaults, and armed robberies) down to the hour and census tract area. CrimeScape calculates the relative chance of crime in each census tract compared to the citywide average at a given hour, and indicates if this prediction is surprising compared to what we would usually expect for this area -- that is, higher than 95% of recent historical values for that area at comparable times.</p>
 
 <p>So far, CrimeScape’s overall predictions are accurate 70% of the time on average. The methodology and data used for calculating the predictions are explained here. You can also see the underlying code in our <a href="https://github.com/ChicagoHarris/Weather-and-Crime">Github repo</a>.</p>
 
@@ -82,8 +82,14 @@
 
 <p>The model utilizes a feed-forward neural network with downsampled non-crime occurrences. The model relies on 100 separately downsampled subsets of the data for the City of Chicago overall. Each of these subsets is trained in a separate neural network. The process is updated weekly with five new downsampled subsets trained in a new network.</p>
 
-<p>The model generates a number of predictions for each census tract at a given hour with slightly different initial conditions. The final prediction for each census tract that we display in CrimeScape is a weighted average of those predictions based on historical performance.</p>
+<p>The model generates a number of predictions for each census tract at a given hour with slightly different initial conditions. The raw prediction for each census tract is a weighted average of those predictions based on historical performance. We then compare the raw prediction for each census tract to the citywide mean to compute the final relative chance of crime that is displayed on Crimescape.</p>
 
+<h2>
+<a id="why-relative-chance" class="anchor" href="#why-relative-chance" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why Relative Chance of Crime?</h2>
+
+<p>Why do we report the relative chance of crime rather than the raw chance of crime for each tract-hour as the main indicator? The goal of CrimeScape is to help law enforcement better understand patterns of crime activity to inform smarter decisions about where to allocate crime prevention resources. By reporting the relative chance of crime and the surprise factor for each census tract hourly, we hope to make it easy to see how expected crime patterns today differ from what we normally expect so police departments can adjust resources accordingly.</p>
+<!-- <p>Furthermore, incidents of crime are uncommon events, even in areas with relatively high crime rates.</p>
+ -->
 <h1>
 <a id="evaluation" class="anchor" href="#evaluation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Evaluation</h1>
 
