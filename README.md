@@ -12,7 +12,7 @@ Run CrimeScapeInitializer.sh to install these
 
 - Postgres (installed in manual_initialization.txt)
 - Postgis
-- jg
+- jq
 - go
 - jsontocsv from github.com/jehiah/json2csv
 - R
