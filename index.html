@@ -36,7 +36,7 @@
 
         <p>CrimeScape predicts when and where violent criminal activity is likely to occur. Currently, the model predicts the relative likelihood of sudden violent criminal activity (shootings and homicides, aggravated assaults, and armed robberies) down to the hour and census tract area. CrimeScape calculates the relative chance of crime in each census tract compared to the citywide average at a given hour, and indicates if this prediction is surprising compared to what we would usually expect for this area -- that is, higher than 95% of recent historical values for that area at comparable times.</p>
 
-<p>So far, CrimeScape’s overall predictions are accurate 70% of the time on average. The methodology and data used for calculating the predictions are explained here. You can also see the underlying code in our <a href="https://github.com/ChicagoHarris/Weather-and-Crime">Github repo</a>.</p>
+<p>So far, CrimeScape’s overall predictions are accurate 70% of the time on average. The methodology and data used for calculating the predictions are explained here. You can also see the underlying code in our <a href="https://github.com/CivicScape">Github repo</a>.</p>
 
 
 <h2>
@@ -57,7 +57,7 @@
 <h4>
 <a id="past-crime-activity" class="anchor" href="#past-crime-activity" aria-hidden="true"><span class="octicon octicon-link"></span></a>Past Crime Activity</h4>
 
-<p>Robbery count per census tract, assault count per census tract, shooting and homicide count per census tract from <a href="http://plenar.io/explore#detail/obs_date__le=2015%2F10%2F21&amp;obs_date__ge=2015%2F07%2F23&amp;agg=week&amp;dataset_name=crimes_2001_to_present&amp;resolution=500">Plenar.io</a> via the Chicago Data Portal</p>
+<p>Robbery count per census tract, assault count per census tract, shooting and homicide count per census tract from <a href="http://plenar.io/explore#detail/obs_date__le=2015%2F10%2F21&amp;obs_date__ge=2015%2F07%2F23&amp;agg=week&amp;dataset_name=crimes_2001_to_present&amp;resolution=500">Plenar.io</a> or each city's data portal, such as the Chicago Data Portal</p>
 
 <h2>
 <a id="model" class="anchor" href="#model" aria-hidden="true"><span class="octicon octicon-link"></span></a>Model</h2>
@@ -80,7 +80,7 @@
 <h2>
 <a id="generating-overall-predictions" class="anchor" href="#generating-overall-predictions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Generating Overall Predictions</h2>
 
-<p>The model utilizes an ensemble of feed-forward neural networks each trained on downsampled non-crime occurrences. The model relies on 100 separately downsampled subsets of the data for the City of Chicago overall. Each of these subsets is trained in a separate neural network.</p>
+<p>The model utilizes an ensemble of feed-forward neural networks each trained on downsampled non-crime occurrences. The model relies on 100 separately downsampled subsets of the data for the city overall. Each of these subsets is trained in a separate neural network.</p>
 
 <p>The initial models are trained using a neural network model that iterates up to 200 times through interconnected nodes with varying weights attempting to provide an accurate output classification based on the training data. On each iteration, the internal weights of the model (how each variable interacts with each other, many times over) are adjusted to minimize the loss function (a calculation of how far off the classification of the training observations are) on the initial run until the loss function is no longer able to decrease. This is known as stochastic gradient descent.</p>
 
@@ -104,7 +104,7 @@
 <h1>
 <a id="evaluation" class="anchor" href="#evaluation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Evaluation</h1>
 
-<p>Our main measure of accuracy is the <strong>ratio of hours correctly predicted to total hours for which predictions were made</strong>. We define an hour to be “correctly predicted” if 1) CrimeScape predicted criminal activity at 50-100% and a crime did occur or 2) CrimeScape predicted criminal activity at 0-49% and a crime did not occur. As of September 2015, CrimeScape is about 70% accurate by this measure.</p>
+<p>Our main measure of accuracy is the **ratio of hours correctly predicted to total hours for which predictions were made**. For example, in our Chicago model, we define an hour to be “correctly predicted” if 1) CrimeScape predicted criminal activity at 50-100% and a crime did occur or 2) CrimeScape predicted criminal activity at 0-49% and a crime did not occur. These cutpoints differ by city but can be accessed in our evaluation code by city. We aim to deploy a city only after CrimeScape is about 70% accurate by this measure.</p>
 
 <p>We further evaluate our model along several different metrics. We calculate a <a href="http://www.dataschool.io/simple-guide-to-confusion-matrix-terminology/">confusion matrix</a> for our updated model that compares the predicted values with what actually happened. The metrics in the confusion matrix are calculated in the following way:</p>
 
@@ -137,7 +137,7 @@ When crime did in fact occur, the true positive rate tells you the proportion of
 <p><strong>False Positive Rate = FP / (FP + TN)</strong>
 When crime did not occur, the false positive rate tells you the proportion of times that CrimeScape incorrectly predicted there would be a crime. It is the probability of failure, given no crime.</p>
 
-<p>Our goal is to optimize to maximize true positives and minimize false negatives, while maintaining less than 15% false positives (as a maximum threshold).</p>
+<p>Our goal is to optimize to maximize true positives and minimize false negatives, while maintaining less than 25% false positives (as a maximum threshold).</p>
 
 <h1>
 <a id="additional-reading" class="anchor" href="#additional-reading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Additional Reading</h1>
