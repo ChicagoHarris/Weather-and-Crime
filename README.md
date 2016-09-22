@@ -4,7 +4,7 @@ This project uses enhanced analytical methods to identify patterns in the relati
 
 Crime data is from the City of Chicago. Weather data is from NOAA, via the Plenar.io API which offers cleaned Chicago weather data for hourly reports from the city. US Census block and tract shapefiles are used to define the geospatial unit of analysis for the study. 
 
-This project is funded by a grant from the Arnold Foundation and is housed at the University of Chicago.
+This project is funded by a grant from the Arnold Foundation and is housed at the University of Chicago. This code was designed to be and was executed on the Argonne National Laboratory supercomputing system. 
 
 Dependencies & Set-up
 ============
@@ -67,9 +67,6 @@ Helpers
 =========
 - Contains awk scripts with information about how weather data is binned
 
-Additional Background
-=========
-Read more about the data and model <a href="http://chicagoharris.github.io/Weather-and-Crime">here</a>.
 
 
 
