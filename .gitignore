@@ -15,3 +15,4 @@ Updater/model_archive/shooting/*.rds
 Updater/model_archive/assault/*.rds
 Updater/model_archive/robbery/*.rds
 Updater/active_models/*.rds
+deprecated/
